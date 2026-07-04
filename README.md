@@ -33,13 +33,13 @@ running `/loop-engineering:run`, make sure these are present in your session:
 
 | Skill it invokes | Used at | Source | How to get it |
 |---|---|---|---|
-| `code-review` | Step 3 | Built into Claude Code | Nothing to do — ships with the CLI |
-| `verify` | Step 6 | Built into Claude Code | Nothing to do — ships with the CLI |
-| `security-review` | Step 8 | Built into Claude Code | Nothing to do — ships with the CLI |
 | `ponytail` | Step 1 (build) | `ponytail` marketplace | `/plugin marketplace add DietrichGebert/ponytail` then `/plugin install ponytail@ponytail` |
+| `code-review` | Step 3 | Built into Claude Code | Nothing to do — ships with the CLI |
+| `debugging-code` | Step 4 | `debug-skill` plugin, `claude-community` marketplace | `/plugin marketplace add anthropics/claude-plugins-community` then `/plugin install debug-skill@claude-community` — **optional**, step 4 falls back to manual debugging if this isn't installed |
+| `verify` | Step 6 | Built into Claude Code | Nothing to do — ships with the CLI |
 | `ponytail-review` | Step 7 | `ponytail` marketplace | included in the `ponytail` plugin above |
 | `ponytail-audit` | Step 7 (pass 1 only) | `ponytail` marketplace | included in the `ponytail` plugin above |
-| `debugging-code` | Step 4 | `debug-skill` plugin, `claude-community` marketplace | `/plugin marketplace add anthropics/claude-plugins-community` then `/plugin install debug-skill@claude-community` — **optional**, step 4 falls back to manual debugging if this isn't installed |
+| `security-review` | Step 8 | Built into Claude Code | Nothing to do — ships with the CLI |
 
 Check what you already have with the **Manage Plugins** panel (or
 `installed_plugins.json` under your Claude Code config folder) before
@@ -195,19 +195,26 @@ name is what drives the command prefix (see Install section).
 
 ---
 
-## Publishing changes / contributing
+## Contributing (for anyone who forks this repo)
 
 This is a personal marketplace (one owner, one plugin) rather than a
-community-submission repo, but if you fork it:
+community-submission repo — there's no process here for submitting changes
+back to `Vishalgoud3105/loop-engineering` itself. But if you fork it to make
+your own variant:
 
 1. Edit the relevant `SKILL.md` under `plugins/loop-engineering/skills/`.
-2. Commit and push.
-3. Anyone who already ran `/plugin marketplace add` against your fork picks
-   up the update the next time Claude Code refreshes marketplaces (or via
-   `/plugin marketplace update`, if your version supports it).
+2. Commit and push to *your* fork.
+3. Anyone who ran `/plugin marketplace add` against *your* fork's URL picks
+   up your changes the next time Claude Code refreshes marketplaces (or via
+   `/plugin marketplace update`, if your version supports it) — no
+   reinstall needed on their end.
 
-To submit `loop-engineering` itself to Anthropic's official community plugin
-directory instead of distributing it as your own marketplace, see
+## Maintainer note: official directory submission
+
+To make `loop-engineering` discoverable without anyone needing to run
+`/plugin marketplace add Vishalgoud3105/loop-engineering` first, it can be
+submitted to Anthropic's official community plugin directory instead of
+staying a self-hosted marketplace. See
 [Plugins — Submit your plugin](https://code.claude.com/docs/en/plugins.md#submit-your-plugin-to-the-community-marketplace)
 (requires running `claude plugin validate` first).
 
