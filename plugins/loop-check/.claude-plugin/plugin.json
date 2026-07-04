@@ -1,0 +1,8 @@
+{
+  "name": "loop-check",
+  "description": "Loop engineering workflow: build with ponytail (YAGNI), then code-review, debug, QA, verify against goal, security-review, and production-grade check, repeatable.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Vishal"
+  }
+}
