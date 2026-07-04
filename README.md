@@ -29,7 +29,7 @@ nothing and the stated goal is met.
 
 loop-engineering is an orchestrator — it doesn't reimplement review, debugging, or
 security scanning itself, it calls out to other skills by name. Before
-running `/loop-engineering:run`, make sure these are present in your session:
+running `/loop-engineering-run`, make sure these are present in your session:
 
 | Skill it invokes | Used at | Source | How to get it |
 |---|---|---|---|
@@ -58,7 +58,7 @@ After installing any plugin, **restart or reload your Claude Code session**
 — skills/commands are only discovered at session start, so a plugin you
 just installed won't autocomplete or be invocable until you do.
 
-**Working directory:** run `/loop-engineering:run` with Claude Code's
+**Working directory:** run `/loop-engineering-run` with Claude Code's
 working directory set to the target project's git repo root. Step 8
 (`security-review`) checks the session's actual working directory, not a
 subdirectory something merely `cd`s into — if you launch from a parent
@@ -100,8 +100,8 @@ debugging.
 ```
 
 Requires Claude Code with plugin support. Same rule as above: restart or
-reload your session afterward so `/loop-engineering:run` and
-`/loop-engineering:create` are discovered.
+reload your session afterward so `/loop-engineering-run` and
+`/loop-engineering-create` are discovered.
 
 ---
 
@@ -110,9 +110,9 @@ reload your session afterward so `/loop-engineering:run` and
 ### Run the loop
 
 ```
-/loop-engineering:run
-/loop-engineering:run path/to/spec.md
-/loop-engineering:run path/to/spec.pdf
+/loop-engineering-run
+/loop-engineering-run path/to/spec.md
+/loop-engineering-run path/to/spec.pdf
 ```
 
 The argument is optional — a path to whatever spec/PRD/context doc defines
@@ -182,13 +182,13 @@ one.
 ### Create a custom variant
 
 ```
-/loop-engineering:create - <description of what should be different>
+/loop-engineering-create - <description of what should be different>
 ```
 
 Examples:
 ```
-/loop-engineering:create - skip security-review, add a load test step
-/loop-engineering:create - backend only, no ponytail-audit sweep
+/loop-engineering-create - skip security-review, add a load test step
+/loop-engineering-create - backend only, no ponytail-audit sweep
 ```
 
 This asks you for a short name if you didn't give one, then writes a new
@@ -200,12 +200,12 @@ project-local skill to:
 
 based on the baseline 11-step sequence with your requested changes applied.
 
-**Important limitation:** this new skill is a plain project skill, not a
-plugin skill, so it can't share the `loop-engineering:` namespace — plugins can't
-add commands to themselves at runtime, and Claude Code only discovers
-skills at session startup. So:
+**Important limitation:** this new skill is a plain project skill, not part
+of this plugin — plugins can't add commands to themselves at runtime, and
+Claude Code only discovers skills at session startup. So:
 
-- It's invoked as `/loop-engineering-custom-<slug>` (flat name, no colon).
+- It's invoked as `/loop-engineering-custom-<slug>`, same hyphenated style
+  as the plugin's own commands.
 - It won't show up until you restart or reload your Claude Code session
   after it's created.
 - It lives in *your project*, not in this plugin — it won't follow you to
@@ -219,20 +219,23 @@ whatever you asked for.
 ## Repo layout
 
 ```
-.claude-plugin/marketplace.json      # marketplace listing (this repo)
+.claude-plugin/marketplace.json          # marketplace listing (this repo)
 plugins/loop-engineering/
-  .claude-plugin/plugin.json         # plugin manifest
+  .claude-plugin/plugin.json             # plugin manifest
   skills/
-    run/SKILL.md                     # /loop-engineering:run  — the 11-step loop
-    create/SKILL.md                  # /loop-engineering:create — custom variants
+    loop-engineering-run/SKILL.md        # /loop-engineering-run  — the 11-step loop
+    loop-engineering-create/SKILL.md     # /loop-engineering-create — custom variants
 ```
 
 Claude Code plugin commands are always namespaced `plugin-name:skill-name`
-— there's no way to expose a bare `/loop-engineering`, which is why the main
-workflow is `/loop-engineering:run` rather than just `/loop-engineering`.
-The plugin name and the marketplace/repo name both happen to be
-`loop-engineering` here, but they're independent identifiers — the plugin
-name is what drives the command prefix (see Install section).
+under the hood — there's no way to make a plugin skill respond to a bare
+`/skill-name` directly. The workaround (same one `ponytail` uses for
+`ponytail-review`/`ponytail-audit`): name the skill's own directory with the
+plugin name repeated as a prefix (`loop-engineering-run`, not just `run`),
+so it reads and types as a clean hyphenated command instead of a colon
+pair. The plugin name and the marketplace/repo name both happen to be
+`loop-engineering` here too, but those are independent identifiers — see
+Install section.
 
 ---
 
@@ -281,7 +284,7 @@ skill — `/goal` is a chat-box-only feature backed by a client-side hook,
 and a skill has no mechanism to invoke it. loop-engineering achieves the same
 "keep working until a condition holds" behavior natively via step 0 (goal
 statement) and step 10 (repeat-until-met), so you don't need `/goal` at
-all when using `/loop-engineering:run`.
+all when using `/loop-engineering-run`.
 
 **Step 8 says it can't find a git repository.** `security-review` checks
 Claude Code's actual session working directory. Make sure you launched

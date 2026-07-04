@@ -1,10 +1,10 @@
 ---
-name: create
-description: Create a new custom loop-engineering workflow variant, saved as a project-level skill the user can invoke by name. Use when the user runs /loop-engineering:create followed by a description of a custom loop, e.g. "/loop-engineering:create - skip security-review, add a load test step".
+name: loop-engineering-create
+description: Create a new custom loop-engineering workflow variant, saved as a project-level skill the user can invoke by name. Use when the user runs /loop-engineering-create followed by a description of a custom loop, e.g. "/loop-engineering-create - skip security-review, add a load test step".
 ---
 
 $ARGUMENTS describes a custom variant of the loop-engineering workflow (see
-the `loop-engineering:run` skill for the baseline 11-step sequence, steps
+the `loop-engineering-run` skill for the baseline 11-step sequence, steps
 0-10: set goal -> build with ponytail -> stage -> code-review -> debug -> QA
 -> verify -> simplify (ponytail-review/audit) -> security-review ->
 production check -> repeat).

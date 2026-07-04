@@ -1,6 +1,6 @@
 ---
-name: run
-description: Run Vishal's "loop engineering" workflow - set a goal from the spec doc, build with ponytail (YAGNI), then code-review, debug, QA, verify against that goal, over-engineering check, security-review, and a production-grade check. Repeat until clean AND the goal is met. Use when the user says "run the loop", "loop check", "loop testing", or invokes /loop-engineering:run. Not the same as the built-in /loop or /goal commands.
+name: loop-engineering-run
+description: Run Vishal's "loop engineering" workflow - set a goal from the spec doc, build with ponytail (YAGNI), then code-review, debug, QA, verify against that goal, over-engineering check, security-review, and a production-grade check. Repeat until clean AND the goal is met. Use when the user says "run the loop", "loop check", "loop testing", or invokes /loop-engineering-run. Not the same as the built-in /loop or /goal commands.
 ---
 
 Run the full loop-engineering QA cycle on the current project. This is a fixed
