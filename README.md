@@ -105,8 +105,8 @@ debugging.
 
 Requires Claude Code with plugin support. Same rule as above: restart or
 reload your session afterward so `/loop-engineering-run`,
-`/loop-engineering-create-loop`, and `/loop-engineering-addstep` are
-discovered.
+`/loop-engineering-create-loop`, `/loop-engineering-addstep`, and
+`/loop-engineering-swap` are discovered.
 
 ---
 
@@ -238,25 +238,50 @@ extra segment is deliberate: it marks the result as a *variant of the run
 baseline*, distinct from `create-loop`'s unrelated from-scratch loops
 (`loop-engineering-<slug>`, no `-run-`).
 
-Both commands follow the same underlying convention as the plugin's own
-commands and `ponytail`'s (`ponytail-review`, `ponytail-audit`): the plugin
-name repeated as a prefix, no colon, no `-custom-` infix.
+**`/loop-engineering-swap`** — reorder steps instead of adding/removing
+them, a companion to `addstep` for exactly that gap. Works on either the
+baseline or a custom loop you already created:
+```
+/loop-engineering-swap - in loop-engineering-run, swap the debug and QA steps
+/loop-engineering-swap - in loop-engineering-backend-only, swap steps 2 and 4
+```
+Important nuance in where it writes the result, since the two targets have
+different ownership: swapping in the **baseline** never edits
+`loop-engineering-run` itself — it writes a new variant to
+`loop-engineering-run-<slug>`, same rule as `addstep`. Swapping in a
+**custom loop you already created** edits that file directly, since it's
+already a project file you own, not part of this plugin.
 
-**Important limitation (both commands):** the generated skill is a plain
-project skill, not part of this plugin — plugins can't add commands to
-themselves at runtime, and Claude Code only discovers skills at session
-startup. So:
+A note on syntax: the command name itself is always fixed
+(`/loop-engineering-swap`) — a slash command can't have dynamic content
+like step numbers baked into the command string. Which workflow and which
+steps to swap are arguments you write after the command, same as every
+other command in this plugin.
+
+All three generator commands (`create-loop`, `addstep`, `swap`) follow the
+same underlying convention as the plugin's own commands and `ponytail`'s
+(`ponytail-review`, `ponytail-audit`): the plugin name repeated as a
+prefix, no colon, no `-custom-` infix.
+
+**Important limitation (all three commands):** a generated/edited skill is
+a plain project skill, not part of this plugin — plugins can't add
+commands to themselves at runtime, and Claude Code only discovers skills
+at session startup. So:
 
 - `create-loop` output is invoked as `/loop-engineering-<slug>`;
-  `addstep` output is invoked as `/loop-engineering-run-<slug>`.
-- It won't show up until you restart or reload your Claude Code session
-  after it's created — VSCode extension: `Ctrl+Shift+P` → **"Developer:
-  Reload Window"**; standalone CLI: exit and restart `claude`. Neither
-  `loop-engineering-create-loop` nor `loop-engineering-addstep` can trigger
-  this for you — a skill has no access to VSCode's or the CLI's controls,
-  so both end their output with an explicit callout telling you to do it.
-- It lives in *your project*, not in this plugin — it won't follow you to
-  other repos, and updating the plugin won't touch it.
+  `addstep`/`swap`-on-baseline output is invoked as
+  `/loop-engineering-run-<slug>`; `swap`-on-an-existing-custom-loop keeps
+  that loop's existing command name (it edited the file in place, it
+  didn't create a new one).
+- It won't show up (or won't reflect the change) until you restart or
+  reload your Claude Code session — VSCode extension: `Ctrl+Shift+P` →
+  **"Developer: Reload Window"**; standalone CLI: exit and restart
+  `claude`. None of these commands can trigger this for you — a skill has
+  no access to VSCode's or the CLI's controls, so all three end their
+  output with an explicit callout telling you to do it.
+- Anything these commands write lives in *your project*, not in this
+  plugin — it won't follow you to other repos, and updating the plugin
+  won't touch it.
 
 You can create as many of these as you want, one per project, each named
 whatever you asked for (or whatever it auto-named itself).
@@ -273,6 +298,7 @@ plugins/loop-engineering/
     loop-engineering-run/SKILL.md            # /loop-engineering-run  — the 11-step loop
     loop-engineering-create-loop/SKILL.md    # /loop-engineering-create-loop — new loop from scratch
     loop-engineering-addstep/SKILL.md        # /loop-engineering-addstep — add/remove a baseline step
+    loop-engineering-swap/SKILL.md           # /loop-engineering-swap — reorder steps
 ```
 
 Claude Code plugin commands are always namespaced `plugin-name:skill-name`
