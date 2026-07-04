@@ -23,12 +23,13 @@ Steps, in order:
 3. **Review.** Invoke the `code-review` skill on the staged diff.
 4. **Debug.** For every issue code-review flagged, fix the root cause (not
    just the symptom — check other callers of the same function). If the
-   `debug-skill` plugin (community marketplace, root cause / breakpoint /
-   live-variable debugging) is installed in this session, invoke it to
-   investigate flagged issues before fixing. Note: the built-in `/debug`
-   command is unrelated — it only toggles CLI diagnostic logging, not a
-   code-debugging tool, so never treat it as this step's debugger. If
-   `debug-skill` isn't installed, trace and fix manually.
+   `debugging-code` skill (breakpoints, step-through, live-variable
+   inspection, call-stack tracing) is available in this session, invoke it
+   via the Skill tool (`debugging-code:debugging-code`) to investigate
+   flagged issues before fixing. Note: the built-in `/debug` command is
+   unrelated — it only toggles CLI diagnostic logging, not a code-debugging
+   tool, so never treat it as this step's debugger. If `debugging-code`
+   isn't installed, trace and fix manually.
 5. **QA.** Do static and live analysis covering: normal use cases, edge
    cases, boundary/invalid inputs, and realistic unseen scenarios. Where the
    project has a test runner, write/run unit and A-B style tests for the
