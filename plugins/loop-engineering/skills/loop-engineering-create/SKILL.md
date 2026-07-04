@@ -14,9 +14,12 @@ Do this:
 1. If $ARGUMENTS doesn't include a short name for the workflow, ask the user
    for one (a few words, e.g. "backend-only" or "no-security").
 2. Slugify that name (lowercase, hyphens) and write a new skill file to
-   `.claude/skills/loop-engineering-custom-<slug>/SKILL.md` in the CURRENT
-   project (create the directories if needed). Base the content on the
-   baseline 11-step sequence, applying whatever the user's description
+   `.claude/skills/loop-engineering-<slug>/SKILL.md` in the CURRENT project
+   (create the directories if needed). Same naming pattern as the plugin's
+   own commands (`loop-engineering-run`, `loop-engineering-create`) and
+   `ponytail`'s (`ponytail-review`, `ponytail-audit`) — the plugin name
+   repeated as a prefix, no `-custom-` infix, no colon. Base the content on
+   the baseline 11-step sequence, applying whatever the user's description
    changes (add, remove, or reorder steps; swap which skills get invoked;
    change the verify target, etc.). Keep the same imperative, step-by-step
    style as the baseline skill, and keep an explicit numbered step list.
@@ -25,8 +28,7 @@ Do this:
 4. Tell the user plainly: this new skill won't be invocable until they
    restart or reload the Claude Code session (skills are only discovered at
    session start). Once reloaded, they can run it as
-   `/loop-engineering-custom-<slug>` (flat name, no colon — this is a
-   project skill, not a plugin skill, so it can't share the plugin's
-   namespace).
+   `/loop-engineering-<slug>` — a project skill, not part of this plugin,
+   so it stays local to this project and won't follow them elsewhere.
 5. Do not run the new workflow yourself in this same turn — just create the
    file and report the exact command name for next time.

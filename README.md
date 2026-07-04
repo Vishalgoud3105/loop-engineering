@@ -195,17 +195,19 @@ This asks you for a short name if you didn't give one, then writes a new
 project-local skill to:
 
 ```
-.claude/skills/loop-engineering-custom-<slug>/SKILL.md
+.claude/skills/loop-engineering-<slug>/SKILL.md
 ```
 
-based on the baseline 11-step sequence with your requested changes applied.
+based on the baseline 11-step sequence with your requested changes applied
+— same naming pattern as the plugin's own commands and `ponytail`'s
+(`ponytail-review`, `ponytail-audit`), no `-custom-` infix.
 
 **Important limitation:** this new skill is a plain project skill, not part
 of this plugin — plugins can't add commands to themselves at runtime, and
 Claude Code only discovers skills at session startup. So:
 
-- It's invoked as `/loop-engineering-custom-<slug>`, same hyphenated style
-  as the plugin's own commands.
+- It's invoked as `/loop-engineering-<slug>`, e.g. naming your variant
+  "backend-only" gives you `/loop-engineering-backend-only`.
 - It won't show up until you restart or reload your Claude Code session
   after it's created.
 - It lives in *your project*, not in this plugin — it won't follow you to
