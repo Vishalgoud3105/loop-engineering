@@ -1,22 +1,22 @@
 ---
 name: create
-description: Create a new custom loop-engineering workflow variant, saved as a project-level skill the user can invoke by name. Use when the user runs /loop-check:create followed by a description of a custom loop, e.g. "/loop-check:create - skip security-review, add a load test step".
+description: Create a new custom loop-engineering workflow variant, saved as a project-level skill the user can invoke by name. Use when the user runs /loop-engineering:create followed by a description of a custom loop, e.g. "/loop-engineering:create - skip security-review, add a load test step".
 ---
 
 $ARGUMENTS describes a custom variant of the loop-engineering workflow (see
-the `loop-check:run` skill for the baseline 11-step sequence, steps 0-10: set
-goal -> build with ponytail -> stage -> code-review -> debug -> QA -> verify
--> simplify (ponytail-review/audit) -> security-review -> production check
--> repeat).
+the `loop-engineering:run` skill for the baseline 11-step sequence, steps
+0-10: set goal -> build with ponytail -> stage -> code-review -> debug -> QA
+-> verify -> simplify (ponytail-review/audit) -> security-review ->
+production check -> repeat).
 
 Do this:
 
 1. If $ARGUMENTS doesn't include a short name for the workflow, ask the user
    for one (a few words, e.g. "backend-only" or "no-security").
 2. Slugify that name (lowercase, hyphens) and write a new skill file to
-   `.claude/skills/loop-check-custom-<slug>/SKILL.md` in the CURRENT
+   `.claude/skills/loop-engineering-custom-<slug>/SKILL.md` in the CURRENT
    project (create the directories if needed). Base the content on the
-   baseline 9-step sequence, applying whatever the user's description
+   baseline 11-step sequence, applying whatever the user's description
    changes (add, remove, or reorder steps; swap which skills get invoked;
    change the verify target, etc.). Keep the same imperative, step-by-step
    style as the baseline skill, and keep an explicit numbered step list.
@@ -25,7 +25,8 @@ Do this:
 4. Tell the user plainly: this new skill won't be invocable until they
    restart or reload the Claude Code session (skills are only discovered at
    session start). Once reloaded, they can run it as
-   `/loop-check-custom-<slug>` (flat name, no colon — this is a project
-   skill, not a plugin skill, so it can't share the plugin's namespace).
+   `/loop-engineering-custom-<slug>` (flat name, no colon — this is a
+   project skill, not a plugin skill, so it can't share the plugin's
+   namespace).
 5. Do not run the new workflow yourself in this same turn — just create the
    file and report the exact command name for next time.

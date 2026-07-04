@@ -5,7 +5,7 @@
   },
   "plugins": [
     {
-      "name": "loop-check",
+      "name": "loop-engineering",
       "source": "./plugins/loop-check",
       "description": "Loop engineering: ponytail build -> code-review -> debug -> QA -> verify -> security-review -> production-grade, repeatable end-to-end quality loop."
     }

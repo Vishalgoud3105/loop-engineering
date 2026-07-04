@@ -29,7 +29,7 @@ nothing and the stated goal is met.
 
 loop-check is an orchestrator — it doesn't reimplement review, debugging, or
 security scanning itself, it calls out to other skills by name. Before
-running `/loop-check:run`, make sure these are present in your session:
+running `/loop-engineering:run`, make sure these are present in your session:
 
 | Skill it invokes | Used at | Source | How to get it |
 |---|---|---|---|
@@ -55,12 +55,12 @@ just installed won't autocomplete or be invocable until you do.
 
 ```
 /plugin marketplace add Vishalgoud3105/loop-check
-/plugin install loop-check@loop-check
+/plugin install loop-engineering@loop-check
 ```
 
 Requires Claude Code with plugin support. Same rule as above: restart or
-reload your session afterward so `/loop-check:run` and `/loop-check:create`
-are discovered.
+reload your session afterward so `/loop-engineering:run` and
+`/loop-engineering:create` are discovered.
 
 ---
 
@@ -69,9 +69,9 @@ are discovered.
 ### Run the loop
 
 ```
-/loop-check:run
-/loop-check:run path/to/spec.md
-/loop-check:run path/to/spec.pdf
+/loop-engineering:run
+/loop-engineering:run path/to/spec.md
+/loop-engineering:run path/to/spec.pdf
 ```
 
 The argument is optional — a path to whatever spec/PRD/context doc defines
@@ -141,30 +141,30 @@ one.
 ### Create a custom variant
 
 ```
-/loop-check:create - <description of what should be different>
+/loop-engineering:create - <description of what should be different>
 ```
 
 Examples:
 ```
-/loop-check:create - skip security-review, add a load test step
-/loop-check:create - backend only, no ponytail-audit sweep
+/loop-engineering:create - skip security-review, add a load test step
+/loop-engineering:create - backend only, no ponytail-audit sweep
 ```
 
 This asks you for a short name if you didn't give one, then writes a new
 project-local skill to:
 
 ```
-.claude/skills/loop-check-custom-<slug>/SKILL.md
+.claude/skills/loop-engineering-custom-<slug>/SKILL.md
 ```
 
 based on the baseline 11-step sequence with your requested changes applied.
 
 **Important limitation:** this new skill is a plain project skill, not a
-plugin skill, so it can't share the `loop-check:` namespace — plugins can't
+plugin skill, so it can't share the `loop-engineering:` namespace — plugins can't
 add commands to themselves at runtime, and Claude Code only discovers
 skills at session startup. So:
 
-- It's invoked as `/loop-check-custom-<slug>` (flat name, no colon).
+- It's invoked as `/loop-engineering-custom-<slug>` (flat name, no colon).
 - It won't show up until you restart or reload your Claude Code session
   after it's created.
 - It lives in *your project*, not in this plugin — it won't follow you to
@@ -182,13 +182,16 @@ whatever you asked for.
 plugins/loop-check/
   .claude-plugin/plugin.json         # plugin manifest
   skills/
-    run/SKILL.md                     # /loop-check:run  — the 11-step loop
-    create/SKILL.md                  # /loop-check:create — custom variants
+    run/SKILL.md                     # /loop-engineering:run  — the 11-step loop
+    create/SKILL.md                  # /loop-engineering:create — custom variants
 ```
 
 Claude Code plugin commands are always namespaced `plugin-name:skill-name`
-— there's no way to expose a bare `/loop-check`, which is why the main
-workflow is `/loop-check:run` rather than just `/loop-check`.
+— there's no way to expose a bare `/loop-engineering`, which is why the main
+workflow is `/loop-engineering:run` rather than just `/loop-engineering`.
+Note the plugin is named `loop-engineering` while the marketplace/repo is
+named `loop-check` — those are two independent identifiers (see Install
+section); the plugin name is what drives the command prefix.
 
 ---
 
@@ -230,4 +233,4 @@ skill — `/goal` is a chat-box-only feature backed by a client-side hook,
 and a skill has no mechanism to invoke it. loop-check achieves the same
 "keep working until a condition holds" behavior natively via step 0 (goal
 statement) and step 10 (repeat-until-met), so you don't need `/goal` at
-all when using `/loop-check:run`.
+all when using `/loop-engineering:run`.
