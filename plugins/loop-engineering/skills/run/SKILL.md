@@ -47,9 +47,10 @@ Steps, in order:
    unrelated — it only toggles CLI diagnostic logging, not a code-debugging
    tool, so never treat it as this step's debugger. `debugging-code` also
    needs its own native `dap` CLI binary installed separately (not just the
-   plugin) — check with `command -v dap` before relying on it, and never
-   install it without telling the user first. If `debugging-code` or `dap`
-   isn't available, trace and fix manually.
+   plugin) — check whether it's on PATH first (`command -v dap` on
+   macOS/Linux/Git-Bash, `where dap` on native Windows cmd/PowerShell), and
+   never install it without telling the user first. If `debugging-code` or
+   `dap` isn't available, trace and fix manually.
 5. **QA.** Do static and live analysis covering: normal use cases, edge
    cases, boundary/invalid inputs, and realistic unseen scenarios. Where the
    project has a test runner, write/run unit and A-B style tests for the

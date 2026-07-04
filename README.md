@@ -35,7 +35,7 @@ running `/loop-engineering:run`, make sure these are present in your session:
 |---|---|---|---|
 | `ponytail` | Step 1 (build) | `ponytail` marketplace | `/plugin marketplace add DietrichGebert/ponytail` then `/plugin install ponytail@ponytail` |
 | `code-review` | Step 3 | Built into Claude Code | Nothing to do — ships with the CLI |
-| `debugging-code` | Step 4 | `debug-skill` plugin, `claude-community` marketplace | `/plugin marketplace add anthropics/claude-plugins-community` then `/plugin install debug-skill@claude-community` — **optional**, step 4 falls back to manual debugging if this isn't installed. Also needs its own native `dap` CLI binary installed separately (see the plugin's own install instructions) — the Claude Code plugin alone isn't enough. |
+| `debugging-code` | Step 4 | `debug-skill` plugin, `claude-community` marketplace | `/plugin marketplace add anthropics/claude-plugins-community` then `/plugin install debug-skill@claude-community` — **optional**, step 4 falls back to manual debugging if this isn't installed. Also needs its own native `dap` CLI binary installed separately — see the Windows note below, the plugin's own install script is macOS/Linux-only. |
 | `verify` | Step 6 | Built into Claude Code | Nothing to do — ships with the CLI |
 | `ponytail-review` | Step 7 | `ponytail` marketplace | included in the `ponytail` plugin above |
 | `ponytail-audit` | Step 7 (pass 1 only) | `ponytail` marketplace | included in the `ponytail` plugin above |
@@ -55,6 +55,26 @@ working directory set to the target project's git repo root. Step 8
 subdirectory something merely `cd`s into — if you launch from a parent
 directory, step 8 will report it can't find a git repo even though the
 project is right there.
+
+**Windows users — installing `dap` for step 4:** the `debug-skill` plugin's
+bundled installer (`install-dap.sh`) only auto-detects macOS and Linux
+(`uname`-based), and its per-language backend docs assume Homebrew/apt. On
+native Windows (cmd/PowerShell), install `dap` via Go instead, which works
+cross-platform:
+
+```
+go install github.com/AlmogBaku/debug-skill/cmd/dap@latest
+```
+
+This needs [Go](https://go.dev/dl/) installed, and puts `dap.exe` under
+`%USERPROFILE%\go\bin` — make sure that's on your PATH. Per-language
+backends: Python (`pip install debugpy`) and Go (`go install
+github.com/go-delve/delve/cmd/dlv@latest`) both work fine on Windows this
+way; Node/TypeScript (js-debug) should auto-discover a VS Code/Cursor
+install same as elsewhere. Rust/C/C++ (`lldb-dap`) has **no documented
+Windows install path** in the plugin as of this writing — if you need that,
+use WSL, or skip installing `dap` entirely and let step 4 fall back to
+manual debugging.
 
 ---
 
