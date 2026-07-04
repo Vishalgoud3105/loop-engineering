@@ -1,16 +1,27 @@
 ---
 name: run
-description: Run Vishal's "loop engineering" workflow - build with ponytail (YAGNI), then code-review, debug, QA, verify against the stated goal, over-engineering check, security-review, and a production-grade check. Repeat until clean. Use when the user says "run the loop", "loop check", "loop testing", or invokes /loop-check:run. Not the same as the built-in /loop command.
+description: Run Vishal's "loop engineering" workflow - set a goal from the spec doc, build with ponytail (YAGNI), then code-review, debug, QA, verify against that goal, over-engineering check, security-review, and a production-grade check. Repeat until clean AND the goal is met. Use when the user says "run the loop", "loop check", "loop testing", or invokes /loop-check:run. Not the same as the built-in /loop or /goal commands.
 ---
 
 Run the full loop-engineering QA cycle on the current project. This is a fixed
-10-step sequence — do not skip steps, and do not stop after the first pass if
-step 9 or 10 finds problems.
+11-step sequence (0-10) — do not skip steps, and do not stop after the first
+pass if step 9 or 10 finds problems.
 
 Argument (optional): $ARGUMENTS may name a target directory and/or a path to
-a spec/PDF/context doc to verify against in step 6. If empty, infer the
-target from the current working directory and look for an obvious spec
-(README, PRD, docs/*.pdf) before asking the user.
+a spec/PDF/context doc. If empty, infer the target from the current working
+directory and look for an obvious spec (README, PRD, docs/*.pdf) before
+asking the user.
+
+Note on scope: the built-in `/goal` command is a chat-box feature backed by a
+client-side hook — a skill has no way to trigger it. Step 0 below achieves
+the same effect natively, driving the whole loop, not just verify.
+
+0. **Set the goal.** Before step 1, read the spec/context doc and write down
+   a single concrete, checkable goal statement (what "done" looks like —
+   e.g. "all endpoints in spec.md are implemented and pass their described
+   behavior, with no extra unrequested endpoints"). This goal is the
+   condition step 6 checks and the condition step 10's repeat depends on —
+   carry it through the whole loop, not just step 6.
 
 Steps, in order:
 
@@ -35,9 +46,8 @@ Steps, in order:
    project has a test runner, write/run unit and A-B style tests for the
    changed behavior.
 6. **Verify.** Invoke the `verify` skill to confirm the working code
-   actually satisfies the project's stated goal or spec doc (from
-   $ARGUMENTS, or the one found in step 0). Only run this on changes with a
-   runtime surface — skip if the diff is docs/tests only.
+   actually satisfies the goal statement from step 0. Only run this on
+   changes with a runtime surface — skip if the diff is docs/tests only.
 7. **Simplify.** Invoke the `ponytail-review` skill on the staged diff to
    catch over-engineering left over from step 1: reinvented stdlib, unneeded
    dependencies, speculative abstractions, dead flexibility. Fix what it
@@ -50,8 +60,10 @@ Steps, in order:
    error handling at trust boundaries, no secrets/debug output left in,
    no dead/commented-out code, dependencies pinned appropriately. Fix
    anything that fails this bar.
-10. **Repeat.** If steps 3-9 made any changes, go back to step 2 (re-stage)
-    and run the cycle again. Stop only when a full pass makes zero changes.
+10. **Repeat.** If steps 3-9 made any changes, OR the goal statement from
+    step 0 isn't yet satisfied, go back to step 2 (re-stage) and run the
+    cycle again. Stop only when a full pass makes zero changes AND the goal
+    is satisfied.
 
 Report at the end: how many passes it took, and a one-line summary of what
 each pass fixed. Do not produce a long narrative report unless asked.
