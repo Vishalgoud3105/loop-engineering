@@ -100,8 +100,9 @@ debugging.
 ```
 
 Requires Claude Code with plugin support. Same rule as above: restart or
-reload your session afterward so `/loop-engineering-run` and
-`/loop-engineering-create` are discovered.
+reload your session afterward so `/loop-engineering-run`,
+`/loop-engineering-create-loop`, and `/loop-engineering-addstep` are
+discovered.
 
 ---
 
@@ -199,33 +200,35 @@ one.
 
 ### Create a custom loop
 
+Two separate commands, depending on what you want:
+
+**`/loop-engineering-create-loop`** — a loop built from scratch, unrelated
+to code QA. Describe your own steps and it designs a workflow around them
+instead of forcing the baseline's steps onto it:
 ```
-/loop-engineering-create - <description of what you want>
+/loop-engineering-create-loop - a content-review loop: draft, fact-check,
+tone-check, publish, repeat until no edits are needed
+```
+Name your workflow explicitly if you want a specific command
+(`/loop-engineering-create-loop - name: content-review, ...`) — if you
+don't name it, it auto-names itself from the description instead of
+asking. Can be run any number of times to build different loop workflows,
+each independent, each under its own name. The only thing every generated
+loop keeps from the baseline is the *shape*, not the steps: state a
+concrete goal up front, then repeat until a full pass makes no changes and
+that goal holds — which steps exist, what they check, what skills they
+call is entirely up to the description.
+
+**`/loop-engineering-addstep`** — modify the *existing* 11-step baseline:
+add a step, remove/skip a step, or both in one call. This never edits the
+plugin's own shipped `loop-engineering-run` — it always writes a separate
+variant, so the original 11-step form stays exactly as installed:
+```
+/loop-engineering-addstep - skip security-review, add a load test step after QA
+/loop-engineering-addstep - backend only, no ponytail-audit sweep
 ```
 
-Handles two different kinds of request:
-
-- **A variant of the baseline** — tweak, trim, or extend the 11-step
-  sequence:
-  ```
-  /loop-engineering-create - skip security-review, add a load test step
-  /loop-engineering-create - backend only, no ponytail-audit sweep
-  ```
-- **A loop built from scratch, unrelated to code QA** — describe your own
-  steps and it designs a workflow around them instead of forcing the
-  baseline's steps onto it:
-  ```
-  /loop-engineering-create - a content-review loop: draft, fact-check,
-  tone-check, publish, repeat until no edits are needed
-  ```
-  The only thing every generated loop keeps from the baseline is the shape,
-  not the steps: state a concrete goal up front, then repeat until a full
-  pass makes no changes and that goal holds. Everything in between —
-  which steps exist, what they check, what skills they call — is whatever
-  the description asks for.
-
-Either way, this asks you for a short name if you didn't give one, then
-writes a new project-local skill to:
+Both commands write a new project-local skill to:
 
 ```
 .claude/skills/loop-engineering-<slug>/SKILL.md
@@ -234,11 +237,12 @@ writes a new project-local skill to:
 — same naming pattern as the plugin's own commands and `ponytail`'s
 (`ponytail-review`, `ponytail-audit`), no `-custom-` infix.
 
-**Important limitation:** this new skill is a plain project skill, not part
-of this plugin — plugins can't add commands to themselves at runtime, and
-Claude Code only discovers skills at session startup. So:
+**Important limitation (both commands):** the generated skill is a plain
+project skill, not part of this plugin — plugins can't add commands to
+themselves at runtime, and Claude Code only discovers skills at session
+startup. So:
 
-- It's invoked as `/loop-engineering-<slug>`, e.g. naming your variant
+- It's invoked as `/loop-engineering-<slug>`, e.g. naming a variant
   "backend-only" gives you `/loop-engineering-backend-only`.
 - It won't show up until you restart or reload your Claude Code session
   after it's created.
@@ -246,19 +250,20 @@ Claude Code only discovers skills at session startup. So:
   other repos, and updating the plugin won't touch it.
 
 You can create as many of these as you want, one per project, each named
-whatever you asked for.
+whatever you asked for (or whatever it auto-named itself).
 
 ---
 
 ## Repo layout
 
 ```
-.claude-plugin/marketplace.json          # marketplace listing (this repo)
+.claude-plugin/marketplace.json              # marketplace listing (this repo)
 plugins/loop-engineering/
-  .claude-plugin/plugin.json             # plugin manifest
+  .claude-plugin/plugin.json                 # plugin manifest
   skills/
-    loop-engineering-run/SKILL.md        # /loop-engineering-run  — the 11-step loop
-    loop-engineering-create/SKILL.md     # /loop-engineering-create — custom variants
+    loop-engineering-run/SKILL.md            # /loop-engineering-run  — the 11-step loop
+    loop-engineering-create-loop/SKILL.md    # /loop-engineering-create-loop — new loop from scratch
+    loop-engineering-addstep/SKILL.md        # /loop-engineering-addstep — add/remove a baseline step
 ```
 
 Claude Code plugin commands are always namespaced `plugin-name:skill-name`
