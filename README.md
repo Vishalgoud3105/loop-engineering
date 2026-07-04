@@ -120,6 +120,14 @@ The argument is optional — a path to whatever spec/PRD/context doc defines
 obvious candidate (README, PRD, `docs/*.pdf`) in the current project before
 asking you for one.
 
+You don't have to type the slash command — Claude also picks this skill up
+from plain language, since that's part of what the skill tells it to watch
+for. Saying any of these in chat works the same as typing the command:
+
+- "run the loop"
+- "loop check"
+- "loop testing"
+
 ### What actually happens, step by step
 
 **Step 0 — Set the goal.** Reads the spec doc and writes down one concrete,
