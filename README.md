@@ -56,7 +56,11 @@ falls back to manual debugging without it — see the Windows note below.
 
 After installing any plugin, **restart or reload your Claude Code session**
 — skills/commands are only discovered at session start, so a plugin you
-just installed won't autocomplete or be invocable until you do.
+just installed won't autocomplete or be invocable until you do. VSCode
+extension: `Ctrl+Shift+P` → **"Developer: Reload Window"**. Standalone CLI:
+exit and restart `claude`. There's no way for a plugin to trigger this
+itself — it's a manual step every time, for any plugin, not specific to
+loop-engineering.
 
 **Working directory:** run `/loop-engineering-run` with Claude Code's
 working directory set to the target project's git repo root. Step 8
@@ -245,7 +249,11 @@ startup. So:
 - It's invoked as `/loop-engineering-<slug>`, e.g. naming a variant
   "backend-only" gives you `/loop-engineering-backend-only`.
 - It won't show up until you restart or reload your Claude Code session
-  after it's created.
+  after it's created — VSCode extension: `Ctrl+Shift+P` → **"Developer:
+  Reload Window"**; standalone CLI: exit and restart `claude`. Neither
+  `loop-engineering-create-loop` nor `loop-engineering-addstep` can trigger
+  this for you — a skill has no access to VSCode's or the CLI's controls,
+  so both end their output with an explicit callout telling you to do it.
 - It lives in *your project*, not in this plugin — it won't follow you to
   other repos, and updating the plugin won't touch it.
 

@@ -34,11 +34,15 @@ Do this:
 4. Give the new skill a `description:` frontmatter line stating exactly
    what differs from the baseline (which step was added/removed), so it's
    easy to tell apart later.
-5. Tell the user plainly: this new skill won't be invocable until they
-   restart or reload the Claude Code session (skills are only discovered at
-   session start). Once reloaded, they can run it as
-   `/loop-engineering-<slug>` — a project skill, not part of this plugin,
-   so it stays local to this project and won't follow them elsewhere.
+5. End your reply with this exact callout, unmissable, its own paragraph —
+   a skill has no way to trigger a reload itself, so this is the only way
+   the user finds out it's needed:
+
+   > ⚠️ **Restart required before `/loop-engineering-<slug>` works.**
+   > VSCode extension: `Ctrl+Shift+P` → **"Developer: Reload Window"**.
+   > Standalone CLI: exit and restart `claude`. Skills are only discovered
+   > at session start — typing the command before reloading will show
+   > "Unknown command" even though the file now exists.
 6. Do not run the new workflow yourself in this same turn — just create the
    file and report the exact command name and exactly what changed from the
    baseline.
