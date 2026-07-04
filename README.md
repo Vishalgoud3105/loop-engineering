@@ -35,7 +35,7 @@ running `/loop-engineering:run`, make sure these are present in your session:
 |---|---|---|---|
 | `ponytail` | Step 1 (build) | `ponytail` marketplace | `/plugin marketplace add DietrichGebert/ponytail` then `/plugin install ponytail@ponytail` |
 | `code-review` | Step 3 | Built into Claude Code | Nothing to do — ships with the CLI |
-| `debugging-code` | Step 4 | `debug-skill` plugin, `claude-community` marketplace | `/plugin marketplace add anthropics/claude-plugins-community` then `/plugin install debug-skill@claude-community` — **optional**, step 4 falls back to manual debugging if this isn't installed |
+| `debugging-code` | Step 4 | `debug-skill` plugin, `claude-community` marketplace | `/plugin marketplace add anthropics/claude-plugins-community` then `/plugin install debug-skill@claude-community` — **optional**, step 4 falls back to manual debugging if this isn't installed. Also needs its own native `dap` CLI binary installed separately (see the plugin's own install instructions) — the Claude Code plugin alone isn't enough. |
 | `verify` | Step 6 | Built into Claude Code | Nothing to do — ships with the CLI |
 | `ponytail-review` | Step 7 | `ponytail` marketplace | included in the `ponytail` plugin above |
 | `ponytail-audit` | Step 7 (pass 1 only) | `ponytail` marketplace | included in the `ponytail` plugin above |
@@ -48,6 +48,13 @@ installing anything twice.
 After installing any plugin, **restart or reload your Claude Code session**
 — skills/commands are only discovered at session start, so a plugin you
 just installed won't autocomplete or be invocable until you do.
+
+**Working directory:** run `/loop-engineering:run` with Claude Code's
+working directory set to the target project's git repo root. Step 8
+(`security-review`) checks the session's actual working directory, not a
+subdirectory something merely `cd`s into — if you launch from a parent
+directory, step 8 will report it can't find a git repo even though the
+project is right there.
 
 ---
 
@@ -241,3 +248,37 @@ and a skill has no mechanism to invoke it. loop-engineering achieves the same
 "keep working until a condition holds" behavior natively via step 0 (goal
 statement) and step 10 (repeat-until-met), so you don't need `/goal` at
 all when using `/loop-engineering:run`.
+
+**Step 8 says it can't find a git repository.** `security-review` checks
+Claude Code's actual session working directory. Make sure you launched
+Claude Code (or `cd`'d before starting the session) inside the target
+project's git repo root, not a parent folder — see Prerequisites above.
+
+---
+
+## Tested
+
+Before writing the sequence above, it was dry-run end to end against a
+throwaway sandbox project (a small Python CLI) with deliberately injected
+issues, following `run/SKILL.md`'s instructions exactly and invoking the
+real underlying skills:
+
+- **Step 1 (ponytail):** built a clean, minimal implementation on the first try.
+- **Step 3 (code-review):** caught an injected command-injection bug, an
+  off-by-one, and a silently-swallowed missing-file error — correctly
+  scoped to correctness only, ignored the over-engineering left for step 7.
+- **Step 4 (debug):** root-caused the injection by replacing the vulnerable
+  call outright rather than patching around it; re-verified live afterward.
+- **Step 5 (QA) / Step 6 (verify):** confirmed correct behavior across
+  normal input, empty file, missing argument, and adjacent probes (directory
+  passed as a file, punctuation-only input).
+- **Step 7 (ponytail-review/audit):** caught a speculative Strategy/Factory
+  abstraction with a single implementation, cut ~18 lines with no behavior
+  change.
+- **Step 9 (production check):** confirmed no secrets, debug output, or
+  dead code.
+- **Step 10 (repeat):** correctly re-ran after pass 1 made changes, then
+  correctly stopped on a clean pass 2.
+
+This dry run is what surfaced the `dap` binary requirement and the working
+directory requirement documented above.

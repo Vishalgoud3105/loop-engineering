@@ -16,6 +16,12 @@ Note on scope: the built-in `/goal` command is a chat-box feature backed by a
 client-side hook — a skill has no way to trigger it. Step 0 below achieves
 the same effect natively, driving the whole loop, not just verify.
 
+Note on working directory: `security-review` (step 8) checks Claude Code's
+actual session working directory, not a directory a shell command `cd`s
+into. Run this skill with Claude Code's working directory set to the target
+project's git repo root — if it's launched from a parent directory, step 8
+will report the repo can't be found even though the project is right there.
+
 0. **Set the goal.** Before step 1, read the spec/context doc and write down
    a single concrete, checkable goal statement (what "done" looks like —
    e.g. "all endpoints in spec.md are implemented and pass their described
@@ -39,8 +45,11 @@ Steps, in order:
    via the Skill tool (`debugging-code:debugging-code`) to investigate
    flagged issues before fixing. Note: the built-in `/debug` command is
    unrelated — it only toggles CLI diagnostic logging, not a code-debugging
-   tool, so never treat it as this step's debugger. If `debugging-code`
-   isn't installed, trace and fix manually.
+   tool, so never treat it as this step's debugger. `debugging-code` also
+   needs its own native `dap` CLI binary installed separately (not just the
+   plugin) — check with `command -v dap` before relying on it, and never
+   install it without telling the user first. If `debugging-code` or `dap`
+   isn't available, trace and fix manually.
 5. **QA.** Do static and live analysis covering: normal use cases, edge
    cases, boundary/invalid inputs, and realistic unseen scenarios. Where the
    project has a test runner, write/run unit and A-B style tests for the
