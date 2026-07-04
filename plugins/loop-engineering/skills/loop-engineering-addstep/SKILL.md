@@ -1,6 +1,6 @@
 ---
 name: loop-engineering-addstep
-description: Add, remove, or skip steps from the baseline loop-engineering-run 11-step sequence, saved as a new project-level variant skill named /loop-engineering-run-{name} — never modifies the shipped baseline itself. Use when the user runs /loop-engineering-addstep followed by a description of what to add and/or remove, e.g. "/loop-engineering-addstep - skip security-review, add a load test step after QA". If the user doesn't name the variant, auto-name it from the description. To instead build an unrelated loop from scratch, use /loop-engineering-create-loop instead.
+description: Add, remove, or skip steps from the baseline loop-engineering-run 11-step sequence, saved as a new project-level variant skill named /loop-engineering-run-{name} — never modifies the shipped baseline itself. Use when the user runs /loop-engineering-addstep followed by a description of what to add and/or remove, e.g. "/loop-engineering-addstep - skip security-review, add a load test step after QA". If the user doesn't name the variant, auto-name it from the description. To instead build an unrelated loop from scratch, use /loop-engineering-newloop instead.
 ---
 
 Add, remove, or skip steps from the baseline 11-step
@@ -36,7 +36,7 @@ Do this:
    change.
 3. Write the result to `.claude/skills/loop-engineering-run-<slug>/SKILL.md`
    in the CURRENT project (create directories if needed) — note the extra
-   `-run-` segment versus `loop-engineering-create-loop`'s
+   `-run-` segment versus `loop-engineering-newloop`'s
    `loop-engineering-<slug>`: it marks this as a *variant of the run
    baseline*, not an unrelated from-scratch loop. Same underlying pattern
    as `ponytail`'s (`ponytail-review`, `ponytail-audit`): the plugin name

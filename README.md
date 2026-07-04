@@ -46,9 +46,9 @@ extension → **Manage Plugins** panel; standalone CLI → `/plugin` command;
 either way, `installed_plugins.json` under your Claude Code config folder
 has the raw list.
 
-**OS compatibility:** loop-engineering's own skill files (`run`, `create`)
-are plain instructions with no embedded shell scripts — nothing in the
-plugin itself is OS-specific. Its dependencies: `code-review`, `verify`,
+**OS compatibility:** loop-engineering's own skill files (`run`, `newloop`,
+`addstep`, `swap`) are plain instructions with no embedded shell scripts —
+nothing in the plugin itself is OS-specific. Its dependencies: `code-review`, `verify`,
 and `security-review` ship with Claude Code on every OS; `ponytail` ships
 proper Windows (PowerShell) and Unix (bash) variants for all its hooks and
 only needs Node.js (already required by Claude Code itself). The one
@@ -108,7 +108,7 @@ debugging.
 
 Requires Claude Code with plugin support. Same rule as above: restart or
 reload your session afterward so `/loop-engineering-run`,
-`/loop-engineering-create-loop`, `/loop-engineering-addstep`, and
+`/loop-engineering-newloop`, `/loop-engineering-addstep`, and
 `/loop-engineering-swap` are discovered.
 
 ---
@@ -209,15 +209,15 @@ one.
 
 Two separate commands, depending on what you want:
 
-**`/loop-engineering-create-loop`** — a loop built from scratch, unrelated
+**`/loop-engineering-newloop`** — a loop built from scratch, unrelated
 to code QA. Describe your own steps and it designs a workflow around them
 instead of forcing the baseline's steps onto it:
 ```
-/loop-engineering-create-loop - a content-review loop: draft, fact-check,
+/loop-engineering-newloop - a content-review loop: draft, fact-check,
 tone-check, publish, repeat until no edits are needed
 ```
 Name your workflow explicitly if you want a specific command
-(`/loop-engineering-create-loop - name: content-review, ...`) — if you
+(`/loop-engineering-newloop - name: content-review, ...`) — if you
 don't name it, it auto-names itself from the description instead of
 asking. Can be run any number of times to build different loop workflows,
 each independent, each under its own name. The only thing every generated
@@ -234,11 +234,11 @@ variant, so the original 11-step form stays exactly as installed:
 /loop-engineering-addstep - skip security-review, add a load test step after QA
 /loop-engineering-addstep - backend only, no ponytail-audit sweep
 ```
-Same auto-naming as `create-loop` if you don't name it explicitly — but
+Same auto-naming as `newloop` if you don't name it explicitly — but
 written to `.claude/skills/loop-engineering-run-<slug>/SKILL.md` (note the
 extra `-run-`), so its command is `/loop-engineering-run-<slug>`. That
 extra segment is deliberate: it marks the result as a *variant of the run
-baseline*, distinct from `create-loop`'s unrelated from-scratch loops
+baseline*, distinct from `newloop`'s unrelated from-scratch loops
 (`loop-engineering-<slug>`, no `-run-`).
 
 **`/loop-engineering-swap`** — reorder steps instead of adding/removing
@@ -261,7 +261,7 @@ like step numbers baked into the command string. Which workflow and which
 steps to swap are arguments you write after the command, same as every
 other command in this plugin.
 
-All three generator commands (`create-loop`, `addstep`, `swap`) follow the
+All three generator commands (`newloop`, `addstep`, `swap`) follow the
 same underlying convention as the plugin's own commands and `ponytail`'s
 (`ponytail-review`, `ponytail-audit`): the plugin name repeated as a
 prefix, no colon, no `-custom-` infix.
@@ -271,7 +271,7 @@ a plain project skill, not part of this plugin — plugins can't add
 commands to themselves at runtime, and Claude Code only discovers skills
 at session startup. So:
 
-- `create-loop` output is invoked as `/loop-engineering-<slug>`;
+- `newloop` output is invoked as `/loop-engineering-<slug>`;
   `addstep`/`swap`-on-baseline output is invoked as
   `/loop-engineering-run-<slug>`; `swap`-on-an-existing-custom-loop keeps
   that loop's existing command name (it edited the file in place, it
@@ -299,7 +299,7 @@ plugins/loop-engineering/
   .claude-plugin/plugin.json                 # plugin manifest
   skills/
     loop-engineering-run/SKILL.md            # /loop-engineering-run  — the 11-step loop
-    loop-engineering-create-loop/SKILL.md    # /loop-engineering-create-loop — new loop from scratch
+    loop-engineering-newloop/SKILL.md    # /loop-engineering-newloop — new loop from scratch
     loop-engineering-addstep/SKILL.md        # /loop-engineering-addstep — add/remove a baseline step
     loop-engineering-swap/SKILL.md           # /loop-engineering-swap — reorder steps
 ```
