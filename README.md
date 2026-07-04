@@ -231,23 +231,24 @@ variant, so the original 11-step form stays exactly as installed:
 /loop-engineering-addstep - skip security-review, add a load test step after QA
 /loop-engineering-addstep - backend only, no ponytail-audit sweep
 ```
+Same auto-naming as `create-loop` if you don't name it explicitly — but
+written to `.claude/skills/loop-engineering-run-<slug>/SKILL.md` (note the
+extra `-run-`), so its command is `/loop-engineering-run-<slug>`. That
+extra segment is deliberate: it marks the result as a *variant of the run
+baseline*, distinct from `create-loop`'s unrelated from-scratch loops
+(`loop-engineering-<slug>`, no `-run-`).
 
-Both commands write a new project-local skill to:
-
-```
-.claude/skills/loop-engineering-<slug>/SKILL.md
-```
-
-— same naming pattern as the plugin's own commands and `ponytail`'s
-(`ponytail-review`, `ponytail-audit`), no `-custom-` infix.
+Both commands follow the same underlying convention as the plugin's own
+commands and `ponytail`'s (`ponytail-review`, `ponytail-audit`): the plugin
+name repeated as a prefix, no colon, no `-custom-` infix.
 
 **Important limitation (both commands):** the generated skill is a plain
 project skill, not part of this plugin — plugins can't add commands to
 themselves at runtime, and Claude Code only discovers skills at session
 startup. So:
 
-- It's invoked as `/loop-engineering-<slug>`, e.g. naming a variant
-  "backend-only" gives you `/loop-engineering-backend-only`.
+- `create-loop` output is invoked as `/loop-engineering-<slug>`;
+  `addstep` output is invoked as `/loop-engineering-run-<slug>`.
 - It won't show up until you restart or reload your Claude Code session
   after it's created — VSCode extension: `Ctrl+Shift+P` → **"Developer:
   Reload Window"**; standalone CLI: exit and restart `claude`. Neither

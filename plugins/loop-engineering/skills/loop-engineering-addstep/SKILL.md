@@ -1,6 +1,6 @@
 ---
 name: loop-engineering-addstep
-description: Add, remove, or skip steps from the baseline loop-engineering-run 11-step sequence, saved as a new project-level variant skill — never modifies the shipped baseline itself. Use when the user runs /loop-engineering-addstep followed by a description of what to add and/or remove, e.g. "/loop-engineering-addstep - skip security-review, add a load test step after QA". To instead build an unrelated loop from scratch, use /loop-engineering-create-loop instead.
+description: Add, remove, or skip steps from the baseline loop-engineering-run 11-step sequence, saved as a new project-level variant skill named /loop-engineering-run-{name} — never modifies the shipped baseline itself. Use when the user runs /loop-engineering-addstep followed by a description of what to add and/or remove, e.g. "/loop-engineering-addstep - skip security-review, add a load test step after QA". If the user doesn't name the variant, auto-name it from the description. To instead build an unrelated loop from scratch, use /loop-engineering-create-loop instead.
 ---
 
 $ARGUMENTS describes step-level changes to apply to the baseline
@@ -17,8 +17,12 @@ always available and untouched.
 
 Do this:
 
-1. If $ARGUMENTS doesn't include a short name for the resulting variant, ask
-   the user for one (a few words, e.g. "no-security" or "with-load-test").
+1. **Naming.** If $ARGUMENTS explicitly names the variant, slugify that
+   (lowercase, hyphens). If it doesn't, auto-generate a short slug from
+   what changed — don't ask, just pick something that reads clearly (e.g.
+   skipping security-review and adding a load test → `no-security-load-test`,
+   or just `no-security` if that's the more prominent change) and tell the
+   user what you named it.
 2. Start from the baseline's exact step list and content, then apply only
    what was asked: add a described step at the right point in the sequence,
    and/or remove/skip a named step. Renumber the remaining steps
@@ -26,11 +30,14 @@ Do this:
    intact regardless of what else changes — that bookend shape is the part
    of "my plugin form" that must stay intact even as the steps between them
    change.
-3. Write the result to `.claude/skills/loop-engineering-<slug>/SKILL.md` in
-   the CURRENT project (create directories if needed) — same naming
-   pattern as the plugin's own commands and `ponytail`'s (`ponytail-review`,
-   `ponytail-audit`): the plugin name repeated as a prefix, no colon. If a
-   skill already exists at that path, ask before overwriting it.
+3. Write the result to `.claude/skills/loop-engineering-run-<slug>/SKILL.md`
+   in the CURRENT project (create directories if needed) — note the extra
+   `-run-` segment versus `loop-engineering-create-loop`'s
+   `loop-engineering-<slug>`: it marks this as a *variant of the run
+   baseline*, not an unrelated from-scratch loop. Same underlying pattern
+   as `ponytail`'s (`ponytail-review`, `ponytail-audit`): the plugin name
+   repeated as a prefix, no colon. If a skill already exists at that path,
+   ask before overwriting it.
 4. Give the new skill a `description:` frontmatter line stating exactly
    what differs from the baseline (which step was added/removed), so it's
    easy to tell apart later.
@@ -38,7 +45,7 @@ Do this:
    a skill has no way to trigger a reload itself, so this is the only way
    the user finds out it's needed:
 
-   > ⚠️ **Restart required before `/loop-engineering-<slug>` works.**
+   > ⚠️ **Restart required before `/loop-engineering-run-<slug>` works.**
    > VSCode extension: `Ctrl+Shift+P` → **"Developer: Reload Window"**.
    > Standalone CLI: exit and restart `claude`. Skills are only discovered
    > at session start — typing the command before reloading will show
