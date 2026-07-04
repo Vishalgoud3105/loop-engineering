@@ -58,23 +58,28 @@ project is right there.
 
 **Windows users — installing `dap` for step 4:** the `debug-skill` plugin's
 bundled installer (`install-dap.sh`) only auto-detects macOS and Linux
-(`uname`-based), and its per-language backend docs assume Homebrew/apt. On
-native Windows (cmd/PowerShell), install `dap` via Go instead, which works
-cross-platform:
+(`uname`-based) and its docs never mention Windows, but a Windows binary
+does exist — the plugin's own release CI builds `dap-windows-amd64.exe` on
+every release, it's just not linked from any install doc. Two options, no
+Go required for the first one:
 
-```
-go install github.com/AlmogBaku/debug-skill/cmd/dap@latest
-```
+- **Download the prebuilt binary (no Go needed):** grab
+  `dap-windows-amd64.exe` from the [latest release](https://github.com/AlmogBaku/debug-skill/releases/latest),
+  rename it to `dap.exe`, and put it in a folder that's on your PATH.
+- **Or, if you have [Go](https://go.dev/dl/) installed:**
+  ```
+  go install github.com/AlmogBaku/debug-skill/cmd/dap@latest
+  ```
+  This puts `dap.exe` under `%USERPROFILE%\go\bin` — make sure that's on
+  your PATH.
 
-This needs [Go](https://go.dev/dl/) installed, and puts `dap.exe` under
-`%USERPROFILE%\go\bin` — make sure that's on your PATH. Per-language
-backends: Python (`pip install debugpy`) and Go (`go install
-github.com/go-delve/delve/cmd/dlv@latest`) both work fine on Windows this
-way; Node/TypeScript (js-debug) should auto-discover a VS Code/Cursor
-install same as elsewhere. Rust/C/C++ (`lldb-dap`) has **no documented
-Windows install path** in the plugin as of this writing — if you need that,
-use WSL, or skip installing `dap` entirely and let step 4 fall back to
-manual debugging.
+Per-language backends: Python (`pip install debugpy`) and Go (`go install
+github.com/go-delve/delve/cmd/dlv@latest`) both work fine on Windows;
+Node/TypeScript (js-debug) should auto-discover a VS Code/Cursor install
+same as elsewhere. Rust/C/C++ (`lldb-dap`) has **no documented Windows
+install path** in the plugin as of this writing — if you need that, use
+WSL, or skip installing `dap` entirely and let step 4 fall back to manual
+debugging.
 
 ---
 
