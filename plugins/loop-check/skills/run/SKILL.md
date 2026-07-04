@@ -1,11 +1,11 @@
 ---
 name: run
-description: Run Vishal's "loop engineering" workflow - build with ponytail (YAGNI), then code-review, debug, QA, verify against the stated goal, security-review, and a production-grade check. Repeat until clean. Use when the user says "run the loop", "loop check", "loop testing", or invokes /loop-check:run. Not the same as the built-in /loop command.
+description: Run Vishal's "loop engineering" workflow - build with ponytail (YAGNI), then code-review, debug, QA, verify against the stated goal, over-engineering check, security-review, and a production-grade check. Repeat until clean. Use when the user says "run the loop", "loop check", "loop testing", or invokes /loop-check:run. Not the same as the built-in /loop command.
 ---
 
 Run the full loop-engineering QA cycle on the current project. This is a fixed
-9-step sequence — do not skip steps, and do not stop after the first pass if
-step 8 or 9 finds problems.
+10-step sequence — do not skip steps, and do not stop after the first pass if
+step 9 or 10 finds problems.
 
 Argument (optional): $ARGUMENTS may name a target directory and/or a path to
 a spec/PDF/context doc to verify against in step 6. If empty, infer the
@@ -38,14 +38,20 @@ Steps, in order:
    actually satisfies the project's stated goal or spec doc (from
    $ARGUMENTS, or the one found in step 0). Only run this on changes with a
    runtime surface — skip if the diff is docs/tests only.
-7. **Security.** Invoke the `security-review` skill. Fix every vulnerability
+7. **Simplify.** Invoke the `ponytail-review` skill on the staged diff to
+   catch over-engineering left over from step 1: reinvented stdlib, unneeded
+   dependencies, speculative abstractions, dead flexibility. Fix what it
+   finds. Only on the first pass of this loop (or if the user explicitly
+   asks for a full sweep), also invoke `ponytail-audit` for a whole-repo
+   check — it's expensive, so don't repeat it every pass.
+8. **Security.** Invoke the `security-review` skill. Fix every vulnerability
    it reports before continuing.
-8. **Production check.** Review the result against a plain production bar:
+9. **Production check.** Review the result against a plain production bar:
    error handling at trust boundaries, no secrets/debug output left in,
    no dead/commented-out code, dependencies pinned appropriately. Fix
    anything that fails this bar.
-9. **Repeat.** If steps 3-8 made any changes, go back to step 2 (re-stage)
-   and run the cycle again. Stop only when a full pass makes zero changes.
+10. **Repeat.** If steps 3-9 made any changes, go back to step 2 (re-stage)
+    and run the cycle again. Stop only when a full pass makes zero changes.
 
 Report at the end: how many passes it took, and a one-line summary of what
 each pass fixed. Do not produce a long narrative report unless asked.
