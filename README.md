@@ -41,9 +41,10 @@ running `/loop-engineering-run`, make sure these are present in your session:
 | `ponytail-audit` | Step 7 (pass 1 only) | `ponytail` marketplace | included in the `ponytail` plugin above |
 | `security-review` | Step 8 | Built into Claude Code | Nothing to do — ships with the CLI |
 
-Check what you already have with the **Manage Plugins** panel (or
-`installed_plugins.json` under your Claude Code config folder) before
-installing anything twice.
+Check what you already have before installing anything twice: VSCode
+extension → **Manage Plugins** panel; standalone CLI → `/plugin` command;
+either way, `installed_plugins.json` under your Claude Code config folder
+has the raw list.
 
 **OS compatibility:** loop-engineering's own skill files (`run`, `create`)
 are plain instructions with no embedded shell scripts — nothing in the
@@ -67,7 +68,9 @@ working directory set to the target project's git repo root. Step 8
 (`security-review`) checks the session's actual working directory, not a
 subdirectory something merely `cd`s into — if you launch from a parent
 directory, step 8 will report it can't find a git repo even though the
-project is right there.
+project is right there. VSCode extension: open the project's repo root as
+your workspace folder. Standalone CLI: `cd` into the repo root *before*
+running `claude`, not after it starts.
 
 **Windows users — installing `dap` for step 4:** the `debug-skill` plugin's
 bundled installer (`install-dap.sh`) only auto-detects macOS and Linux
@@ -340,12 +343,14 @@ staying a self-hosted marketplace. See
 
 ## Troubleshooting
 
-**"No matching commands" when I type the skill name.** Some installed
-skills aren't meant to be typed directly in the chat box — they're invoked
-by Claude via the Skill tool when relevant (that's how `debugging-code`
-works here). Also, Claude Code generally only refreshes its command index
-on session start/reload, so a fresh install often needs a restart before
-autocomplete picks it up.
+**"No matching commands" / "Unknown command" when I type the skill name.**
+Some installed skills aren't meant to be typed directly (chat box in the
+VSCode extension, prompt in the standalone CLI) — they're invoked by
+Claude via the Skill tool when relevant (that's how `debugging-code` works
+here). Also, Claude Code only refreshes its command index at session
+start, so a fresh install always needs a restart before autocomplete picks
+it up — VSCode: `Ctrl+Shift+P` → **"Developer: Reload Window"**; CLI: exit
+and restart `claude`.
 
 **`/debug` doesn't do what I expect.** The built-in `/debug` command only
 toggles CLI diagnostic logging (equivalent to `claude --debug`) — it is
