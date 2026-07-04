@@ -3,6 +3,11 @@ name: loop-engineering-swap
 description: Swap/reorder two or more steps in an existing loop-engineering workflow — the baseline loop-engineering-run, or an already-created custom loop from loop-engineering-create-loop or loop-engineering-addstep. Companion to loop-engineering-addstep, for reordering instead of adding/removing. Use when the user runs /loop-engineering-swap followed by which workflow and which steps to swap, e.g. "/loop-engineering-swap - in loop-engineering-run, swap the debug and QA steps" or "/loop-engineering-swap - in loop-engineering-backend-only, swap steps 2 and 4".
 ---
 
+Reorder two or more steps in an existing loop-engineering workflow — the
+baseline `loop-engineering-run`, or a custom loop you already created.
+Companion to `loop-engineering-addstep`, for reordering instead of
+adding/removing.
+
 $ARGUMENTS names which workflow to modify and which steps to swap (by
 number or by description — resolve either form against the target's actual
 step list).

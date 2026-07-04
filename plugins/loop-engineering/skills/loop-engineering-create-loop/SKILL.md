@@ -3,6 +3,12 @@ name: loop-engineering-create-loop
 description: Create a completely new loop workflow from scratch, unrelated to the baseline loop-engineering-run sequence, saved as a project-level skill. Can be run any number of times to build different loop workflows. Use when the user runs /loop-engineering-create-loop followed by a description of a new loop, e.g. "/loop-engineering-create-loop - a content-review loop: draft, fact-check, tone-check, publish, repeat until no edits". If the user doesn't name the workflow, auto-name it from the description. To instead modify the existing 11-step baseline (add/remove/skip a step), use /loop-engineering-addstep instead.
 ---
 
+Build a brand-new, fully custom loop workflow from scratch and save it as
+its own reusable slash command — for anything, not just code QA (a
+content-review loop, a research loop, a data-pipeline loop, whatever the
+description asks for). This can be invoked any number of times to build a
+whole library of independent, differently-named loop workflows.
+
 $ARGUMENTS describes a brand-new loop workflow — NOT a variant of
 `loop-engineering-run`'s 11-step baseline (that's what
 `loop-engineering-addstep` is for). Design whatever numbered step sequence

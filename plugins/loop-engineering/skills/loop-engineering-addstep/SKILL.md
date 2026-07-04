@@ -3,6 +3,10 @@ name: loop-engineering-addstep
 description: Add, remove, or skip steps from the baseline loop-engineering-run 11-step sequence, saved as a new project-level variant skill named /loop-engineering-run-{name} — never modifies the shipped baseline itself. Use when the user runs /loop-engineering-addstep followed by a description of what to add and/or remove, e.g. "/loop-engineering-addstep - skip security-review, add a load test step after QA". If the user doesn't name the variant, auto-name it from the description. To instead build an unrelated loop from scratch, use /loop-engineering-create-loop instead.
 ---
 
+Add, remove, or skip steps from the baseline 11-step
+`loop-engineering-run` sequence without ever touching the plugin's shipped
+file — every change here produces a separate new variant skill instead.
+
 $ARGUMENTS describes step-level changes to apply to the baseline
 `loop-engineering-run` sequence (steps 0-10: set goal -> build with ponytail
 -> stage -> code-review -> debug -> QA -> verify -> simplify
