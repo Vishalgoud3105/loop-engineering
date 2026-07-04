@@ -1,13 +1,15 @@
 {
   "name": "loop-engineering",
   "owner": {
-    "name": "Vishal"
+    "name": "Vishal",
+    "url": "https://github.com/Vishalgoud3105"
   },
   "plugins": [
     {
       "name": "loop-engineering",
       "source": "./plugins/loop-engineering",
-      "description": "Loop engineering: ponytail build -> code-review -> debug -> QA -> verify -> security-review -> production-grade, repeatable end-to-end quality loop."
+      "description": "An 11-step goal-driven QA loop: build with ponytail (YAGNI), code-review, debug, QA, verify against your spec, cut over-engineering, security-review, and a production-grade check, repeatable until clean.",
+      "homepage": "https://github.com/Vishalgoud3105/loop-engineering"
     }
   ]
 }
