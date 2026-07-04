@@ -127,6 +127,16 @@ for. Saying any of these in chat works the same as typing the command:
 - "run the loop"
 - "loop check"
 - "loop testing"
+- "loop engineering"
+- "check loop analysis"
+
+**Disambiguation from the built-in `loop` skill:** Claude Code ships its own
+unrelated `loop` skill for recurring/scheduled tasks (e.g. "check the deploy
+every 5 minutes"). loop-engineering's skill description explicitly tells
+Claude the difference — if your phrasing mentions an interval or "every N
+minutes/hours," that routes to the built-in scheduler, not this plugin. This
+skill always means one build-and-QA pass (which internally repeats itself
+at step 10 until clean), never a recurring background task.
 
 ### What actually happens, step by step
 

@@ -1,11 +1,14 @@
 ---
 name: loop-engineering-run
-description: Run Vishal's "loop engineering" workflow - set a goal from the spec doc, build with ponytail (YAGNI), then code-review, debug, QA, verify against that goal, over-engineering check, security-review, and a production-grade check. Repeat until clean AND the goal is met. Use when the user says "run the loop", "loop check", "loop testing", or invokes /loop-engineering-run. Not the same as the built-in /loop or /goal commands.
+description: Run Vishal's "loop engineering" workflow - a single-invocation 11-step build+QA cycle (build, code-review, debug, QA, verify against a goal, cut over-engineering, security-review, production check, repeat until clean). Trigger phrases "run the loop", "loop check", "loop testing", "loop engineering", "check loop analysis", or the command /loop-engineering-run. Do NOT confuse with the built-in "loop" skill (recurring interval scheduler, e.g. "check the deploy every 5 minutes") or the built-in /goal command (persistent chat-box goal condition) - if the request mentions an interval, a recurring schedule, or "every N minutes/hours", that is the built-in loop skill, not this one.
 ---
 
 Run the full loop-engineering QA cycle on the current project. This is a fixed
-11-step sequence (0-10) — do not skip steps, and do not stop after the first
-pass if step 9 or 10 finds problems.
+11-step sequence (0-10) that runs once per invocation (it repeats itself
+internally at step 10 until clean, but is not a recurring/scheduled task —
+if the user wants something re-run on an interval, that's the built-in
+`loop` skill, not this one). Do not skip steps, and do not stop after the
+first pass if step 9 or 10 finds problems.
 
 Argument (optional): $ARGUMENTS may name a target directory and/or a path to
 a spec/PDF/context doc. If empty, infer the target from the current working
