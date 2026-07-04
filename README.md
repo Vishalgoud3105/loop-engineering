@@ -197,26 +197,40 @@ one.
 
 ---
 
-### Create a custom variant
+### Create a custom loop
 
 ```
-/loop-engineering-create - <description of what should be different>
+/loop-engineering-create - <description of what you want>
 ```
 
-Examples:
-```
-/loop-engineering-create - skip security-review, add a load test step
-/loop-engineering-create - backend only, no ponytail-audit sweep
-```
+Handles two different kinds of request:
 
-This asks you for a short name if you didn't give one, then writes a new
-project-local skill to:
+- **A variant of the baseline** — tweak, trim, or extend the 11-step
+  sequence:
+  ```
+  /loop-engineering-create - skip security-review, add a load test step
+  /loop-engineering-create - backend only, no ponytail-audit sweep
+  ```
+- **A loop built from scratch, unrelated to code QA** — describe your own
+  steps and it designs a workflow around them instead of forcing the
+  baseline's steps onto it:
+  ```
+  /loop-engineering-create - a content-review loop: draft, fact-check,
+  tone-check, publish, repeat until no edits are needed
+  ```
+  The only thing every generated loop keeps from the baseline is the shape,
+  not the steps: state a concrete goal up front, then repeat until a full
+  pass makes no changes and that goal holds. Everything in between —
+  which steps exist, what they check, what skills they call — is whatever
+  the description asks for.
+
+Either way, this asks you for a short name if you didn't give one, then
+writes a new project-local skill to:
 
 ```
 .claude/skills/loop-engineering-<slug>/SKILL.md
 ```
 
-based on the baseline 11-step sequence with your requested changes applied
 — same naming pattern as the plugin's own commands and `ponytail`'s
 (`ponytail-review`, `ponytail-audit`), no `-custom-` infix.
 
