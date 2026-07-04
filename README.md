@@ -1,13 +1,13 @@
-# loop-check
+# loop-engineering
 
-A Claude Code plugin marketplace containing **loop-check**: an end-to-end
+A Claude Code plugin marketplace containing **loop-engineering**: an end-to-end
 "loop engineering" QA workflow for Claude Code. It chains together build,
 review, debugging, QA, verification, over-engineering cleanup, security, and
 production-readiness into one repeatable cycle that keeps running until the
 codebase is actually clean — not just until the first pass looks okay.
 
 This is *not* the same thing as Claude Code's built-in `/loop` command
-(which repeats a prompt on a timer/interval). loop-check is a fixed,
+(which repeats a prompt on a timer/interval). loop-engineering is a fixed,
 opinionated 11-step quality sequence you run once per feature/change, and it
 loops internally until every step passes clean in the same run.
 
@@ -18,7 +18,7 @@ loops internally until every step passes clean in the same run.
 Most "build a feature" sessions go: write code, maybe skim it, ship it. Bugs,
 security holes, and over-engineered slop slip through because nothing forces
 a second look — and even when a review step *does* run, its findings don't
-automatically get re-checked after the fix. loop-check makes the second
+automatically get re-checked after the fix. loop-engineering makes the second
 (and third, and fourth) look mandatory and automatic: every stage's output
 feeds the next, and the whole cycle repeats until a full pass changes
 nothing and the stated goal is met.
@@ -27,7 +27,7 @@ nothing and the stated goal is met.
 
 ## Prerequisites
 
-loop-check is an orchestrator — it doesn't reimplement review, debugging, or
+loop-engineering is an orchestrator — it doesn't reimplement review, debugging, or
 security scanning itself, it calls out to other skills by name. Before
 running `/loop-engineering:run`, make sure these are present in your session:
 
@@ -51,11 +51,11 @@ just installed won't autocomplete or be invocable until you do.
 
 ---
 
-## Install loop-check itself
+## Install loop-engineering itself
 
 ```
-/plugin marketplace add Vishalgoud3105/loop-check
-/plugin install loop-engineering@loop-check
+/plugin marketplace add Vishalgoud3105/loop-engineering
+/plugin install loop-engineering@loop-engineering
 ```
 
 Requires Claude Code with plugin support. Same rule as above: restart or
@@ -75,7 +75,7 @@ reload your session afterward so `/loop-engineering:run` and
 ```
 
 The argument is optional — a path to whatever spec/PRD/context doc defines
-"done" for this project. If you don't pass one, loop-check looks for an
+"done" for this project. If you don't pass one, loop-engineering looks for an
 obvious candidate (README, PRD, `docs/*.pdf`) in the current project before
 asking you for one.
 
@@ -179,7 +179,7 @@ whatever you asked for.
 
 ```
 .claude-plugin/marketplace.json      # marketplace listing (this repo)
-plugins/loop-check/
+plugins/loop-engineering/
   .claude-plugin/plugin.json         # plugin manifest
   skills/
     run/SKILL.md                     # /loop-engineering:run  — the 11-step loop
@@ -189,9 +189,9 @@ plugins/loop-check/
 Claude Code plugin commands are always namespaced `plugin-name:skill-name`
 — there's no way to expose a bare `/loop-engineering`, which is why the main
 workflow is `/loop-engineering:run` rather than just `/loop-engineering`.
-Note the plugin is named `loop-engineering` while the marketplace/repo is
-named `loop-check` — those are two independent identifiers (see Install
-section); the plugin name is what drives the command prefix.
+The plugin name and the marketplace/repo name both happen to be
+`loop-engineering` here, but they're independent identifiers — the plugin
+name is what drives the command prefix (see Install section).
 
 ---
 
@@ -200,13 +200,13 @@ section); the plugin name is what drives the command prefix.
 This is a personal marketplace (one owner, one plugin) rather than a
 community-submission repo, but if you fork it:
 
-1. Edit the relevant `SKILL.md` under `plugins/loop-check/skills/`.
+1. Edit the relevant `SKILL.md` under `plugins/loop-engineering/skills/`.
 2. Commit and push.
 3. Anyone who already ran `/plugin marketplace add` against your fork picks
    up the update the next time Claude Code refreshes marketplaces (or via
    `/plugin marketplace update`, if your version supports it).
 
-To submit `loop-check` itself to Anthropic's official community plugin
+To submit `loop-engineering` itself to Anthropic's official community plugin
 directory instead of distributing it as your own marketplace, see
 [Plugins — Submit your plugin](https://code.claude.com/docs/en/plugins.md#submit-your-plugin-to-the-community-marketplace)
 (requires running `claude plugin validate` first).
@@ -224,13 +224,13 @@ autocomplete picks it up.
 
 **`/debug` doesn't do what I expect.** The built-in `/debug` command only
 toggles CLI diagnostic logging (equivalent to `claude --debug`) — it is
-*not* a code-debugging tool and loop-check never treats it as one. The
+*not* a code-debugging tool and loop-engineering never treats it as one. The
 actual debugger this plugin uses is the separate `debugging-code` skill
 from the `debug-skill` community plugin.
 
 **Can I use the built-in `/goal` command with this?** Not from inside the
 skill — `/goal` is a chat-box-only feature backed by a client-side hook,
-and a skill has no mechanism to invoke it. loop-check achieves the same
+and a skill has no mechanism to invoke it. loop-engineering achieves the same
 "keep working until a condition holds" behavior natively via step 0 (goal
 statement) and step 10 (repeat-until-met), so you don't need `/goal` at
 all when using `/loop-engineering:run`.
