@@ -45,6 +45,15 @@ Check what you already have with the **Manage Plugins** panel (or
 `installed_plugins.json` under your Claude Code config folder) before
 installing anything twice.
 
+**OS compatibility:** loop-engineering's own skill files (`run`, `create`)
+are plain instructions with no embedded shell scripts — nothing in the
+plugin itself is OS-specific. Its dependencies: `code-review`, `verify`,
+and `security-review` ship with Claude Code on every OS; `ponytail` ships
+proper Windows (PowerShell) and Unix (bash) variants for all its hooks and
+only needs Node.js (already required by Claude Code itself). The one
+partial exception is `debugging-code`'s `dap` binary — optional, step 4
+falls back to manual debugging without it — see the Windows note below.
+
 After installing any plugin, **restart or reload your Claude Code session**
 — skills/commands are only discovered at session start, so a plugin you
 just installed won't autocomplete or be invocable until you do.
