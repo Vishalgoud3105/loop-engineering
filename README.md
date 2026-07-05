@@ -221,12 +221,21 @@ one.
 
 ### Create a custom loop
 
-Three commands, depending on what you want. Only `loop-engineering-run`
-is coding-specific — `newloop`, `addstep`, and `swap` all work for any
-domain, not just software: a content-review loop, a research loop, a
-hiring pipeline, anything with a repeatable "keep going until this goal
-holds" shape. No coding knowledge or code-specific skills required to use
-any of the three.
+Three commands, depending on what you want. `loop-engineering-run` is
+coding-only. `newloop`, `addstep`, and `swap` work for **both** — coding
+and non-coding — not one instead of the other:
+
+- On the coding baseline (`loop-engineering-run`), `addstep` and `swap`
+  behave exactly as they always have: modify/reorder the 11-step QA
+  sequence, output stays a `loop-engineering-run-<slug>` variant.
+- On any custom loop built with `newloop` — coding or not (a
+  content-review loop, a research loop, a hiring pipeline, anything with a
+  repeatable "keep going until this goal holds" shape) — `addstep` and
+  `swap` work identically, no coding knowledge or code-specific skills
+  required.
+
+Same three commands either way — the target you name in `$ARGUMENTS`
+decides which mode applies, not a separate command per mode.
 
 **`/loop-engineering-newloop`** — a loop built from scratch, unrelated
 to code QA. Describe your own steps and it designs a workflow around them
