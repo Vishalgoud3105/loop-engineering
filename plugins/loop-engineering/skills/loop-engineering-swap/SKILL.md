@@ -1,11 +1,11 @@
 ---
 name: loop-engineering-swap
-description: Swap/reorder two or more steps in an existing loop-engineering workflow — the baseline loop-engineering-run, or an already-created custom loop from loop-engineering-scratch or loop-engineering-addstep. Companion to loop-engineering-addstep, for reordering instead of adding/removing. Use when the user runs /loop-engineering-swap followed by which workflow and which steps to swap, e.g. "/loop-engineering-swap - in loop-engineering-run, swap the debug and QA steps" or "/loop-engineering-swap - in loop-engineering-backend-only, swap steps 2 and 4".
+description: Swap/reorder two or more steps in an existing loop-engineering workflow — the baseline loop-engineering-run, or an already-created custom loop from loop-engineering-newloop or loop-engineering-addstep. Companion to loop-engineering-addstep, for reordering instead of adding/removing. Use when the user runs /loop-engineering-swap followed by which workflow and which steps to swap, e.g. "/loop-engineering-swap - in loop-engineering-run, swap the debug and QA steps" or "/loop-engineering-swap - in loop-engineering-backend-only, swap steps 2 and 4".
 ---
 
 Reorder two or more steps in an existing loop-engineering workflow — the
 baseline `loop-engineering-run`, or a custom loop you already created (from
-`loop-engineering-scratch` or `loop-engineering-addstep`). Companion to
+`loop-engineering-newloop` or `loop-engineering-addstep`). Companion to
 `loop-engineering-addstep`, for reordering instead of adding/removing.
 
 $ARGUMENTS names which workflow to modify and which steps to swap (by
@@ -18,7 +18,7 @@ Do this:
    - If $ARGUMENTS says "run", "baseline", or names nothing else specific,
      the target is the baseline `loop-engineering-run` sequence.
    - If $ARGUMENTS names an existing project-local custom skill (something
-     already created by `loop-engineering-scratch` or
+     already created by `loop-engineering-newloop` or
      `loop-engineering-addstep`, found under
      `.claude/skills/loop-engineering-*/SKILL.md` in the current project),
      the target is that file.
