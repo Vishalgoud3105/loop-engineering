@@ -1,6 +1,6 @@
 ---
-name: loop-engineering-newloop
-description: Build a brand-new loop workflow from scratch (not a variant of the baseline) and save it as its own reusable slash command. Use when the user runs /loop-engineering-newloop followed by a description of a new loop, e.g. "/loop-engineering-newloop - a content-review loop: draft, fact-check, tone-check, publish, repeat until no edits". If the user doesn't name the workflow, auto-name it from the description. To instead modify the existing 11-step baseline (add/remove/skip a step), use /loop-engineering-addstep instead.
+name: loop-engineering-scratch
+description: Build a brand-new loop workflow from scratch (not a variant of the baseline) and save it as its own reusable slash command. Use when the user runs /loop-engineering-scratch followed by a description of a new loop, e.g. "/loop-engineering-scratch - a content-review loop: draft, fact-check, tone-check, publish, repeat until no edits". If the user doesn't name the workflow, auto-name it from the description. To instead modify the existing 11-step baseline (add/remove/skip a step), use /loop-engineering-addstep instead.
 ---
 
 Build a brand-new loop workflow from scratch, for anything — a
@@ -29,7 +29,7 @@ Do this:
 2. Write a new skill file to `.claude/skills/loop-engineering-<slug>/SKILL.md`
    in the CURRENT project (create directories if needed) — same naming
    pattern as the plugin's own commands (`loop-engineering-run`,
-   `loop-engineering-newloop`) and `ponytail`'s (`ponytail-review`,
+   `loop-engineering-scratch`) and `ponytail`'s (`ponytail-review`,
    `ponytail-audit`): the plugin name repeated as a prefix, no colon.
    If a skill already exists at that path, ask before overwriting it rather
    than silently clobbering an earlier custom loop.
