@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": [
     { "name": "ponytail", "marketplace": "ponytail" },
-    { "name": "debug-skill", "marketplace": "claude-community" }
+    { "name": "debugging-code", "marketplace": "claude-community" }
   ],
   "keywords": [
     "loop",

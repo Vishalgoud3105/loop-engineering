@@ -31,7 +31,7 @@ loop-engineering is an orchestrator — it doesn't reimplement review, debugging
 security scanning itself, it calls out to other skills by name.
 
 **Auto-install (Claude Code v2.1.110+):** `plugin.json` declares `ponytail`
-and `debug-skill` as dependencies, and the marketplace allowlists both for
+and `debugging-code` as dependencies, and the marketplace allowlists both for
 cross-marketplace installs. Installing `loop-engineering` installs them
 too, automatically, no separate steps — **as long as their marketplaces
 are already known to your Claude Code setup.** If `ponytail`'s marketplace
@@ -49,7 +49,7 @@ here's the manual path for each:
 |---|---|---|---|
 | `ponytail` | Step 1 (build) | `ponytail` marketplace | `/plugin marketplace add DietrichGebert/ponytail` then `/plugin install ponytail@ponytail` |
 | `code-review` | Step 3 | Built into Claude Code | Nothing to do — ships with the CLI |
-| `debugging-code` | Step 4 | `debug-skill` plugin, `claude-community` marketplace | `/plugin marketplace add anthropics/claude-plugins-community` then `/plugin install debug-skill@claude-community` — **optional**, step 4 falls back to manual debugging if this isn't installed. Also needs its own native `dap` CLI binary installed separately — see the Windows note below, the plugin's own install script is macOS/Linux-only, and there's no auto-install mechanism for that binary regardless of Claude Code version. |
+| `debugging-code` | Step 4 | `debugging-code` plugin (same underlying package is also listed as `debug-skill` — identical repo/commit, either name installs it), `claude-community` marketplace | `/plugin marketplace add anthropics/claude-plugins-community` then `/plugin install debugging-code@claude-community` — **optional**, step 4 falls back to manual debugging if this isn't installed. Also needs its own native `dap` CLI binary installed separately — see the Windows note below, the plugin's own install script is macOS/Linux-only, and there's no auto-install mechanism for that binary regardless of Claude Code version. |
 | `verify` | Step 6 | Built into Claude Code | Nothing to do — ships with the CLI |
 | `ponytail-review` | Step 7 | `ponytail` marketplace | included in the `ponytail` plugin above |
 | `ponytail-audit` | Step 7 (pass 1 only) | `ponytail` marketplace | included in the `ponytail` plugin above |
