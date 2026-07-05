@@ -221,7 +221,12 @@ one.
 
 ### Create a custom loop
 
-Two separate commands, depending on what you want:
+Three commands, depending on what you want. Only `loop-engineering-run`
+is coding-specific — `newloop`, `addstep`, and `swap` all work for any
+domain, not just software: a content-review loop, a research loop, a
+hiring pipeline, anything with a repeatable "keep going until this goal
+holds" shape. No coding knowledge or code-specific skills required to use
+any of the three.
 
 **`/loop-engineering-newloop`** — a loop built from scratch, unrelated
 to code QA. Describe your own steps and it designs a workflow around them
@@ -240,20 +245,25 @@ concrete goal up front, then repeat until a full pass makes no changes and
 that goal holds — which steps exist, what they check, what skills they
 call is entirely up to the description.
 
-**`/loop-engineering-addstep`** — modify the *existing* 11-step baseline:
-add a step, remove/skip a step, or both in one call. This never edits the
-plugin's own shipped `loop-engineering-run` — it always writes a separate
-variant, so the original 11-step form stays exactly as installed:
+**`/loop-engineering-addstep`** — add, remove, or skip a step in an
+*existing* loop: either the 11-step coding baseline, or any custom loop
+you already built with `newloop` (coding or not — a content-review loop
+works exactly the same way). Never edits the plugin's own shipped
+`loop-engineering-run`; on the baseline it always writes a separate
+variant, and on a custom loop it edits that file in place since it's
+already yours:
 ```
 /loop-engineering-addstep - skip security-review, add a load test step after QA
-/loop-engineering-addstep - backend only, no ponytail-audit sweep
+/loop-engineering-addstep - in loop-engineering-content-review, add a legal-check step after fact-check
 ```
-Same auto-naming as `newloop` if you don't name it explicitly — but
-written to `.claude/skills/loop-engineering-run-<slug>/SKILL.md` (note the
-extra `-run-`), so its command is `/loop-engineering-run-<slug>`. That
-extra segment is deliberate: it marks the result as a *variant of the run
-baseline*, distinct from `newloop`'s unrelated from-scratch loops
-(`loop-engineering-<slug>`, no `-run-`).
+Same auto-naming as `newloop` if you don't name it explicitly. When
+targeting the baseline, the result is written to
+`.claude/skills/loop-engineering-run-<slug>/SKILL.md` (note the extra
+`-run-`), so its command is `/loop-engineering-run-<slug>` — that segment
+marks it as a *variant of the coding baseline*, distinct from `newloop`'s
+unrelated from-scratch loops (`loop-engineering-<slug>`, no `-run-`). When
+targeting an existing custom loop, the change lands directly in that
+loop's own file and keeps its existing command name.
 
 **`/loop-engineering-swap`** — reorder steps instead of adding/removing
 them, a companion to `addstep` for exactly that gap. Works on either the
@@ -286,10 +296,10 @@ commands to themselves at runtime, and Claude Code only discovers skills
 at session startup. So:
 
 - `newloop` output is invoked as `/loop-engineering-<slug>`;
-  `addstep`/`swap`-on-baseline output is invoked as
-  `/loop-engineering-run-<slug>`; `swap`-on-an-existing-custom-loop keeps
-  that loop's existing command name (it edited the file in place, it
-  didn't create a new one).
+  `addstep`/`swap` targeting the baseline is invoked as
+  `/loop-engineering-run-<slug>`; `addstep`/`swap` targeting an existing
+  custom loop keeps that loop's existing command name (both edit the file
+  in place, neither creates a new one in that case).
 - It won't show up (or won't reflect the change) until you restart or
   reload your Claude Code session — VSCode extension: `Ctrl+Shift+P` →
   **"Developer: Reload Window"**; standalone CLI: exit and restart
@@ -314,7 +324,7 @@ plugins/loop-engineering/
   skills/
     loop-engineering-run/SKILL.md            # /loop-engineering-run  — the 11-step loop
     loop-engineering-newloop/SKILL.md    # /loop-engineering-newloop — new loop from scratch
-    loop-engineering-addstep/SKILL.md        # /loop-engineering-addstep — add/remove a baseline step
+    loop-engineering-addstep/SKILL.md        # /loop-engineering-addstep — add/remove a step (baseline or custom loop)
     loop-engineering-swap/SKILL.md           # /loop-engineering-swap — reorder steps
 ```
 
