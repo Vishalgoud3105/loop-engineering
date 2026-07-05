@@ -4,9 +4,9 @@ description: Swap/reorder two or more steps in an existing loop-engineering work
 ---
 
 Reorder two or more steps in an existing loop-engineering workflow — the
-baseline `loop-engineering-run`, or a custom loop you already created.
-Companion to `loop-engineering-addstep`, for reordering instead of
-adding/removing.
+baseline `loop-engineering-run`, or a custom loop you already created (from
+`loop-engineering-scratch` or `loop-engineering-addstep`). Companion to
+`loop-engineering-addstep`, for reordering instead of adding/removing.
 
 $ARGUMENTS names which workflow to modify and which steps to swap (by
 number or by description — resolve either form against the target's actual
