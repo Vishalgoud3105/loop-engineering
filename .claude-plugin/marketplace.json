@@ -4,6 +4,7 @@
     "name": "Vishal",
     "url": "https://github.com/Vishalgoud3105"
   },
+  "allowCrossMarketplaceDependenciesOn": ["ponytail", "claude-community"],
   "plugins": [
     {
       "name": "loop-engineering",
