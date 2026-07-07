@@ -142,6 +142,24 @@ The argument is optional — a path to whatever spec/PRD/context doc defines
 obvious candidate (README, PRD, `docs/*.pdf`) in the current project before
 asking you for one.
 
+**Loop anatomy — what every loop-engineering workflow carries:**
+
+- **Goal** — a concrete, checkable "done" statement set before anything
+  runs; every cycle is evaluated against it.
+- **Memory** — a `loop-state.md` file at the project root recording the
+  goal, pass number, what each pass fixed, and an honesty log of anything
+  blocked or skipped. A finding fixed in pass 1 isn't re-litigated in
+  pass 3, and an interrupted loop resumes instead of restarting. (Commit
+  it or gitignore it, your call — it's a plain markdown log.)
+- **Human gate** — the loop reads, builds, tests, fixes, and stages
+  freely, but never commits, pushes, deploys, publishes, or sends
+  anything on its own. It hands the final button to you. Loops generated
+  by `newloop` get gates written in at every step with external
+  consequences; `edit` and `swap` refuse to silently remove or reorder a
+  gate past the action it protects.
+- **Repeat until the goal holds** — not a fixed number of iterations; the
+  loop only stops when a full pass changes nothing and the goal is met.
+
 You don't have to type the slash command — Claude also picks this skill up
 from plain language, since that's part of what the skill tells it to watch
 for. Saying any of these in chat works the same as typing the command:

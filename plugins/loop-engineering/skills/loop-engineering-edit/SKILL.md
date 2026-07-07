@@ -34,10 +34,14 @@ Do this:
 3. Start from the target's exact step list and content, then apply only
    what was asked: add a described step at the right point in the
    sequence, and/or remove/skip a named step. Renumber the remaining steps
-   sequentially. Keep the goal-setting step and the final `Repeat` step
-   intact regardless of what else changes — that bookend shape ("state a
-   goal, loop until it holds") is what makes it a loop-engineering
-   workflow at all, whatever the steps between them do.
+   sequentially. Four elements are protected regardless of what else
+   changes: the goal-setting step, the final `Repeat` step, any
+   `loop-state.md` memory read/write, and any human-gate step (a step that
+   pauses for approval before publishing/sending/deploying/spending/
+   deleting). That anatomy — goal, memory, gate, repeat — is what makes it
+   a loop-engineering workflow at all. If the user explicitly asks to
+   remove a human gate, warn once about what will then auto-execute
+   unattended, and only proceed if they confirm.
 4. **Where to write the result — this depends on the target, same rule
    `loop-engineering-swap` follows:**
    - Target was the baseline → NEVER edit

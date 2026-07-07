@@ -28,7 +28,10 @@ Do this:
    positions, renumbering every step sequentially afterward. The
    goal-setting step (step 0 in the baseline) and the final `Repeat` step
    are fixed bookends — never swap those out of position, only reorder the
-   steps between them.
+   steps between them. If the target has a human-gate step (one that
+   pauses for approval before publishing/sending/deploying), a swap must
+   not move it to after the action it gates — the gate always stays
+   immediately before its consequence.
 3. **Where to write the result — this depends on the target, same rule
    `loop-engineering-edit` follows:**
    - Target was the baseline → NEVER edit

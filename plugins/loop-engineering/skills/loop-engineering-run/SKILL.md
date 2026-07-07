@@ -25,12 +25,22 @@ into. Run this skill with Claude Code's working directory set to the target
 project's git repo root — if it's launched from a parent directory, step 8
 will report the repo can't be found even though the project is right there.
 
-0. **Set the goal.** Before step 1, read the spec/context doc and write down
-   a single concrete, checkable goal statement (what "done" looks like —
-   e.g. "all endpoints in spec.md are implemented and pass their described
-   behavior, with no extra unrequested endpoints"). This goal is the
-   condition step 6 checks and the condition step 10's repeat depends on —
-   carry it through the whole loop, not just step 6.
+0. **Set the goal + open the memory file.** Before step 1, read the
+   spec/context doc and write down a single concrete, checkable goal
+   statement (what "done" looks like — e.g. "all endpoints in spec.md are
+   implemented and pass their described behavior, with no extra unrequested
+   endpoints"). This goal is the condition step 6 checks and the condition
+   step 10's repeat depends on — carry it through the whole loop.
+
+   Then create (or resume from) `loop-state.md` at the project root. This
+   is the loop's memory: the goal statement, the current pass number, a
+   per-pass log of findings fixed, and an honesty log of anything blocked
+   or skipped (a step whose skill was missing, a tool that couldn't run,
+   a check that errored). Consult it at the start of every pass so a
+   finding already fixed in pass 1 isn't re-litigated in pass 3, and so a
+   loop interrupted mid-run resumes where it stopped instead of starting
+   over. Update it at the end of every pass. Never silently skip a step —
+   a step that couldn't run goes in the honesty log and the final report.
 
 Steps, in order:
 
@@ -74,9 +84,19 @@ Steps, in order:
    no dead/commented-out code, dependencies pinned appropriately. Fix
    anything that fails this bar.
 10. **Repeat.** If steps 3-9 made any changes, OR the goal statement from
-    step 0 isn't yet satisfied, go back to step 2 (re-stage) and run the
-    cycle again. Stop only when a full pass makes zero changes AND the goal
-    is satisfied.
+    step 0 isn't yet satisfied, update `loop-state.md` and go back to
+    step 2 (re-stage) and run the cycle again. Stop only when a full pass
+    makes zero changes AND the goal is satisfied.
 
-Report at the end: how many passes it took, and a one-line summary of what
-each pass fixed. Do not produce a long narrative report unless asked.
+**Human gate — hard boundary for the whole loop:** the loop may freely
+read, analyze, build, test, fix, and stage all day, but it never executes
+actions with consequences outside the working tree on its own: no `git
+commit`, no `git push`, no deploy, no publish, no sending anything
+anywhere. The loop ends with changes staged and verified, then hands the
+final button to the human. The one pre-existing exception stays as
+written: `git init` on a directory with unrelated content already requires
+asking first.
+
+Report at the end: how many passes it took, a one-line summary of what
+each pass fixed, and anything in the honesty log (blocked/skipped steps).
+Do not produce a long narrative report unless asked.

@@ -11,12 +11,27 @@ $ARGUMENTS describes a brand-new loop workflow — NOT a variant of
 `loop-engineering-run`'s 11-step baseline (that's what
 `loop-engineering-edit` is for). Design whatever numbered step sequence
 actually matches the description, invoking whatever skills/tools fit — not
-necessarily `ponytail`, `code-review`, `security-review`, etc. at all. The
-only structural requirement carried over from the baseline: step 0 states a
-concrete, checkable goal, and the last step is `Repeat` — go back and
-re-run until a full pass makes no changes and the goal is satisfied. That
-"set a goal, loop until it holds" shape is what makes it a loop-engineering
-workflow; the steps in between are entirely the user's to define.
+necessarily `ponytail`, `code-review`, `security-review`, etc. at all.
+
+The steps in between are the user's to define, but every generated loop
+MUST carry the four structural elements that make it a loop-engineering
+workflow (not just a checklist):
+
+- **Goal (step 0):** a concrete, checkable statement of what "done" looks
+  like — the evaluation criterion every cycle is judged against.
+- **Memory:** the loop reads/writes a `loop-state.md` file each cycle
+  (goal, pass number, what was already handled, what's blocked) so a
+  repeated cycle never redoes work it already did, and an interrupted
+  loop resumes instead of restarting.
+- **Human gate:** any step with consequences beyond the local
+  project — publishing, sending to anyone, deploying, spending money,
+  deleting things — must stop and ask the human for explicit approval,
+  never auto-execute. The loop drafts and prepares; the human presses
+  the final button. Write this gate into the generated skill at the
+  exact steps it applies to.
+- **Repeat (last step):** go back and re-run until a full pass makes no
+  changes and the goal is satisfied — logging, not hiding, anything
+  that couldn't run (honesty log inside `loop-state.md`).
 
 Do this:
 
