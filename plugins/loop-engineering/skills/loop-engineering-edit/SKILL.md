@@ -1,6 +1,6 @@
 ---
-name: loop-engineering-addstep
-description: Add, remove, or skip steps in an existing loop-engineering workflow — the baseline loop-engineering-run (coding-focused), or any custom loop you already created with loop-engineering-newloop, coding or not (a content-review loop, a research loop, anything). Never modifies the baseline itself. Use when the user runs /loop-engineering-addstep followed by which workflow and what to add/remove, e.g. "/loop-engineering-addstep - skip security-review, add a load test step after QA" or "/loop-engineering-addstep - in loop-engineering-content-review, add a legal-check step after fact-check". If the user doesn't name the resulting variant, auto-name it from the description. To instead build an unrelated loop from scratch, use /loop-engineering-newloop instead.
+name: loop-engineering-edit
+description: Add, remove, or skip steps in an existing loop-engineering workflow — the baseline loop-engineering-run (coding-focused), or any custom loop you already created with loop-engineering-newloop, coding or not (a content-review loop, a research loop, anything). Never modifies the baseline itself. Use when the user runs /loop-engineering-edit followed by which workflow and what to add/remove, e.g. "/loop-engineering-edit - skip security-review, add a load test step after QA" or "/loop-engineering-edit - in loop-engineering-content-review, add a legal-check step after fact-check". If the user doesn't name the resulting variant, auto-name it from the description. To instead build an unrelated loop from scratch, use /loop-engineering-newloop instead.
 ---
 
 Add, remove, or skip steps in an existing loop-engineering workflow —
@@ -20,7 +20,7 @@ Do this:
      -> production check -> repeat).
    - If $ARGUMENTS names an existing project-local custom skill (something
      already created by `loop-engineering-newloop` or a previous
-     `loop-engineering-addstep`/`loop-engineering-swap` call, found under
+     `loop-engineering-edit`/`loop-engineering-swap` call, found under
      `.claude/skills/loop-engineering-*/SKILL.md` in the current project —
      coding or not, e.g. a content-review or research loop), the target is
      that file.

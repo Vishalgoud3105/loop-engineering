@@ -61,7 +61,7 @@ either way, `installed_plugins.json` under your Claude Code config folder
 has the raw list.
 
 **OS compatibility:** loop-engineering's own skill files (`run`, `newloop`,
-`addstep`, `swap`) are plain instructions with no embedded shell scripts —
+`edit`, `swap`) are plain instructions with no embedded shell scripts —
 nothing in the plugin itself is OS-specific. Its dependencies: `code-review`, `verify`,
 and `security-review` ship with Claude Code on every OS; `ponytail` ships
 proper Windows (PowerShell) and Unix (bash) variants for all its hooks and
@@ -122,7 +122,7 @@ debugging.
 
 Requires Claude Code with plugin support. Same rule as above: restart or
 reload your session afterward so `/loop-engineering-run`,
-`/loop-engineering-newloop`, `/loop-engineering-addstep`, and
+`/loop-engineering-newloop`, `/loop-engineering-edit`, and
 `/loop-engineering-swap` are discovered.
 
 ---
@@ -222,15 +222,15 @@ one.
 ### Create a custom loop
 
 Three commands, depending on what you want. `loop-engineering-run` is
-coding-only. `newloop`, `addstep`, and `swap` work for **both** — coding
+coding-only. `newloop`, `edit`, and `swap` work for **both** — coding
 and non-coding — not one instead of the other:
 
-- On the coding baseline (`loop-engineering-run`), `addstep` and `swap`
+- On the coding baseline (`loop-engineering-run`), `edit` and `swap`
   behave exactly as they always have: modify/reorder the 11-step QA
   sequence, output stays a `loop-engineering-run-<slug>` variant.
 - On any custom loop built with `newloop` — coding or not (a
   content-review loop, a research loop, a hiring pipeline, anything with a
-  repeatable "keep going until this goal holds" shape) — `addstep` and
+  repeatable "keep going until this goal holds" shape) — `edit` and
   `swap` work identically, no coding knowledge or code-specific skills
   required.
 
@@ -254,7 +254,7 @@ concrete goal up front, then repeat until a full pass makes no changes and
 that goal holds — which steps exist, what they check, what skills they
 call is entirely up to the description.
 
-**`/loop-engineering-addstep`** — add, remove, or skip a step in an
+**`/loop-engineering-edit`** — add, remove, or skip a step in an
 *existing* loop: either the 11-step coding baseline, or any custom loop
 you already built with `newloop` (coding or not — a content-review loop
 works exactly the same way). Never edits the plugin's own shipped
@@ -262,8 +262,8 @@ works exactly the same way). Never edits the plugin's own shipped
 variant, and on a custom loop it edits that file in place since it's
 already yours:
 ```
-/loop-engineering-addstep - skip security-review, add a load test step after QA
-/loop-engineering-addstep - in loop-engineering-content-review, add a legal-check step after fact-check
+/loop-engineering-edit - skip security-review, add a load test step after QA
+/loop-engineering-edit - in loop-engineering-content-review, add a legal-check step after fact-check
 ```
 Same auto-naming as `newloop` if you don't name it explicitly. When
 targeting the baseline, the result is written to
@@ -275,7 +275,7 @@ targeting an existing custom loop, the change lands directly in that
 loop's own file and keeps its existing command name.
 
 **`/loop-engineering-swap`** — reorder steps instead of adding/removing
-them, a companion to `addstep` for exactly that gap. Works on either the
+them, a companion to `edit` for exactly that gap. Works on either the
 baseline or a custom loop you already created:
 ```
 /loop-engineering-swap - in loop-engineering-run, swap the debug and QA steps
@@ -284,7 +284,7 @@ baseline or a custom loop you already created:
 Important nuance in where it writes the result, since the two targets have
 different ownership: swapping in the **baseline** never edits
 `loop-engineering-run` itself — it writes a new variant to
-`loop-engineering-run-<slug>`, same rule as `addstep`. Swapping in a
+`loop-engineering-run-<slug>`, same rule as `edit`. Swapping in a
 **custom loop you already created** edits that file directly, since it's
 already a project file you own, not part of this plugin.
 
@@ -294,7 +294,7 @@ like step numbers baked into the command string. Which workflow and which
 steps to swap are arguments you write after the command, same as every
 other command in this plugin.
 
-All three generator commands (`newloop`, `addstep`, `swap`) follow the
+All three generator commands (`newloop`, `edit`, `swap`) follow the
 same underlying convention as the plugin's own commands and `ponytail`'s
 (`ponytail-review`, `ponytail-audit`): the plugin name repeated as a
 prefix, no colon, no `-custom-` infix.
@@ -305,8 +305,8 @@ commands to themselves at runtime, and Claude Code only discovers skills
 at session startup. So:
 
 - `newloop` output is invoked as `/loop-engineering-<slug>`;
-  `addstep`/`swap` targeting the baseline is invoked as
-  `/loop-engineering-run-<slug>`; `addstep`/`swap` targeting an existing
+  `edit`/`swap` targeting the baseline is invoked as
+  `/loop-engineering-run-<slug>`; `edit`/`swap` targeting an existing
   custom loop keeps that loop's existing command name (both edit the file
   in place, neither creates a new one in that case).
 - It won't show up (or won't reflect the change) until you restart or
@@ -333,7 +333,7 @@ plugins/loop-engineering/
   skills/
     loop-engineering-run/SKILL.md            # /loop-engineering-run  — the 11-step loop
     loop-engineering-newloop/SKILL.md    # /loop-engineering-newloop — new loop from scratch
-    loop-engineering-addstep/SKILL.md        # /loop-engineering-addstep — add/remove a step (baseline or custom loop)
+    loop-engineering-edit/SKILL.md        # /loop-engineering-edit — add/remove a step (baseline or custom loop)
     loop-engineering-swap/SKILL.md           # /loop-engineering-swap — reorder steps
 ```
 

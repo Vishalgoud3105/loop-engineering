@@ -1,12 +1,12 @@
 ---
 name: loop-engineering-swap
-description: Swap/reorder two or more steps in an existing loop-engineering workflow — the baseline loop-engineering-run, or an already-created custom loop from loop-engineering-newloop or loop-engineering-addstep. Companion to loop-engineering-addstep, for reordering instead of adding/removing. Use when the user runs /loop-engineering-swap followed by which workflow and which steps to swap, e.g. "/loop-engineering-swap - in loop-engineering-run, swap the debug and QA steps" or "/loop-engineering-swap - in loop-engineering-backend-only, swap steps 2 and 4".
+description: Swap/reorder two or more steps in an existing loop-engineering workflow — the baseline loop-engineering-run, or an already-created custom loop from loop-engineering-newloop or loop-engineering-edit. Companion to loop-engineering-edit, for reordering instead of adding/removing. Use when the user runs /loop-engineering-swap followed by which workflow and which steps to swap, e.g. "/loop-engineering-swap - in loop-engineering-run, swap the debug and QA steps" or "/loop-engineering-swap - in loop-engineering-backend-only, swap steps 2 and 4".
 ---
 
 Reorder two or more steps in an existing loop-engineering workflow — the
 baseline `loop-engineering-run`, or a custom loop you already created (from
-`loop-engineering-newloop` or `loop-engineering-addstep`). Companion to
-`loop-engineering-addstep`, for reordering instead of adding/removing.
+`loop-engineering-newloop` or `loop-engineering-edit`). Companion to
+`loop-engineering-edit`, for reordering instead of adding/removing.
 
 $ARGUMENTS names which workflow to modify and which steps to swap (by
 number or by description — resolve either form against the target's actual
@@ -19,7 +19,7 @@ Do this:
      the target is the baseline `loop-engineering-run` sequence.
    - If $ARGUMENTS names an existing project-local custom skill (something
      already created by `loop-engineering-newloop` or
-     `loop-engineering-addstep`, found under
+     `loop-engineering-edit`, found under
      `.claude/skills/loop-engineering-*/SKILL.md` in the current project),
      the target is that file.
    - Can't find a match → ask the user which workflow they mean, listing
@@ -30,7 +30,7 @@ Do this:
    are fixed bookends — never swap those out of position, only reorder the
    steps between them.
 3. **Where to write the result — this depends on the target, same rule
-   `loop-engineering-addstep` follows:**
+   `loop-engineering-edit` follows:**
    - Target was the baseline → NEVER edit
      `plugins/loop-engineering/skills/loop-engineering-run/SKILL.md`. Write
      a new skill instead to `.claude/skills/loop-engineering-run-<slug>/SKILL.md`

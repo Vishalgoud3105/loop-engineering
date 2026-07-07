@@ -1,6 +1,6 @@
 ---
 name: loop-engineering-newloop
-description: Build a brand-new loop workflow from scratch (not a variant of the baseline) and save it as its own reusable slash command. Use when the user runs /loop-engineering-newloop followed by a description of a new loop, e.g. "/loop-engineering-newloop - a content-review loop: draft, fact-check, tone-check, publish, repeat until no edits". If the user doesn't name the workflow, auto-name it from the description. To instead modify the existing 11-step baseline (add/remove/skip a step), use /loop-engineering-addstep instead.
+description: Build a brand-new loop workflow from scratch (not a variant of the baseline) and save it as its own reusable slash command. Use when the user runs /loop-engineering-newloop followed by a description of a new loop, e.g. "/loop-engineering-newloop - a content-review loop with draft, fact-check, tone-check, and publish steps, repeating until no edits". If the user doesn't name the workflow, auto-name it from the description. To instead modify the existing 11-step baseline (add/remove/skip a step), use /loop-engineering-edit instead.
 ---
 
 Build a brand-new loop workflow from scratch, for anything — a
@@ -9,7 +9,7 @@ QA. Save any number of these as independent, reusable slash commands.
 
 $ARGUMENTS describes a brand-new loop workflow — NOT a variant of
 `loop-engineering-run`'s 11-step baseline (that's what
-`loop-engineering-addstep` is for). Design whatever numbered step sequence
+`loop-engineering-edit` is for). Design whatever numbered step sequence
 actually matches the description, invoking whatever skills/tools fit — not
 necessarily `ponytail`, `code-review`, `security-review`, etc. at all. The
 only structural requirement carried over from the baseline: step 0 states a
